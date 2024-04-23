@@ -28,7 +28,9 @@ def hbnb():
 
 @app.route("/c/<text>", strict_slashes=False)
 def display_c(text):
-    return f"C {text}"
+    new_text = text.split("_")
+    mtext = " ".join(new_text)
+    return f"C {mtext}"
 
 
 if __name__ == "__main__":
