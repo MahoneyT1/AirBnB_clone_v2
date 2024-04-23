@@ -18,7 +18,7 @@ You must use the option strict_slashes=False in your route definition
 """
 
 
-from flask import Flask
+from flask import Flask, render_template
 
 
 app = Flask(__name__)
@@ -51,7 +51,7 @@ def number(n):
 @app.route("/number_template/<int:n>", strict_slashes=False)
 def number_template(n):
     if n:
-        return f"<h1> Number: {n}<h1>"
+        return render_template("5-number.html", n=n)
 
 
 if __name__ == "__main__":
