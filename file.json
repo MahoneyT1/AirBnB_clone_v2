@@ -1,1 +1,89 @@
-{"Place.d3aa934e-de3c-4645-8a8d-adda67010d30": {"id": "d3aa934e-de3c-4645-8a8d-adda67010d30", "created_at": "2024-05-28T16:58:08.489704", "updated_at": "2024-05-28T16:58:08.489704", "name": "Aba", "__class__": "Place"}, "Place.3e832ab6-a753-462b-a9af-4dd96f5b8841": {"id": "3e832ab6-a753-462b-a9af-4dd96f5b8841", "created_at": "2024-05-28T16:59:49.101758", "updated_at": "2024-05-28T16:59:49.101758", "city_id": "0001", "user_id": "0001", "name": "My_little_house", "number_rooms": "4", "number_bathrooms": "2", "max_guest": "10", "price_by_night": "300", "latitude": "37.773972", "longitude": "-122.431297", "__class__": "Place"}, "User.44536eb1-4135-4a49-8938-79357b402483": {"id": "44536eb1-4135-4a49-8938-79357b402483", "created_at": "2024-05-28T17:05:23.784591", "updated_at": "2024-05-28T17:05:23.784591", "name": "my_house", "__class__": "User"}, "User.0f4c821a-8327-4055-b8eb-d016ee3115bc": {"id": "0f4c821a-8327-4055-b8eb-d016ee3115bc", "created_at": "2024-05-28T17:11:25.503165", "updated_at": "2024-05-28T17:11:25.504169", "name": "jude boy", "__class__": "User"}, "User.bf1440ed-e1a9-445f-bc6a-47ff2f1b07d2": {"id": "bf1440ed-e1a9-445f-bc6a-47ff2f1b07d2", "created_at": "2024-05-28T17:12:06.282549", "updated_at": "2024-05-28T17:12:06.282549", "name": "jude boy", "age": "4.5", "__class__": "User"}, "User.a31346fa-ab72-4dc4-b458-d8dbadc979b6": {"id": "a31346fa-ab72-4dc4-b458-d8dbadc979b6", "created_at": "2024-05-28T17:16:37.232792", "updated_at": "2024-05-28T17:16:37.232792", "name": "jude boy", "__class__": "User"}, "User.ea1686cf-a816-442e-b51f-066f4125fc31": {"id": "ea1686cf-a816-442e-b51f-066f4125fc31", "created_at": "2024-05-28T17:16:47.949173", "updated_at": "2024-05-28T17:16:47.949173", "name": "jude boy", "age": "4.6", "__class__": "User"}, "User.13adc34b-0906-4777-b5ef-c961ac0af854": {"id": "13adc34b-0906-4777-b5ef-c961ac0af854", "created_at": "2024-05-28T17:26:24.562229", "updated_at": "2024-05-28T17:26:24.562229", "age": 4.6, "__class__": "User"}, "User.c259bd92-6750-4e92-82f0-a1ef5bbec650": {"id": "c259bd92-6750-4e92-82f0-a1ef5bbec650", "created_at": "2024-05-28T17:29:36.489485", "updated_at": "2024-05-28T17:29:36.489485", "age": 4, "__class__": "User"}}
+{
+    "Place.d3aa934e-de3c-4645-8a8d-adda67010d30": {
+        "id": "d3aa934e-de3c-4645-8a8d-adda67010d30",
+        "created_at": "2024-05-28T16:58:08.489704",
+        "updated_at": "2024-05-28T16:58:08.489704",
+        "name": "Aba",
+        "__class__": "Place"
+    },
+    "Place.3e832ab6-a753-462b-a9af-4dd96f5b8841": {
+        "id": "3e832ab6-a753-462b-a9af-4dd96f5b8841",
+        "created_at": "2024-05-28T16:59:49.101758",
+        "updated_at": "2024-05-28T16:59:49.101758",
+        "city_id": "0001",
+        "user_id": "0001",
+        "name": "My_little_house",
+        "number_rooms": "4",
+        "number_bathrooms": "2",
+        "max_guest": "10",
+        "price_by_night": "300",
+        "latitude": "37.773972",
+        "longitude": "-122.431297",
+        "__class__": "Place"
+    },
+    "User.44536eb1-4135-4a49-8938-79357b402483": {
+        "id": "44536eb1-4135-4a49-8938-79357b402483",
+        "created_at": "2024-05-28T17:05:23.784591",
+        "updated_at": "2024-05-28T17:05:23.784591",
+        "name": "my_house",
+        "__class__": "User"
+    },
+    "User.0f4c821a-8327-4055-b8eb-d016ee3115bc": {
+        "id": "0f4c821a-8327-4055-b8eb-d016ee3115bc",
+        "created_at": "2024-05-28T17:11:25.503165",
+        "updated_at": "2024-05-28T17:11:25.504169",
+        "name": "jude boy",
+        "__class__": "User"
+    },
+    "User.bf1440ed-e1a9-445f-bc6a-47ff2f1b07d2": {
+        "id": "bf1440ed-e1a9-445f-bc6a-47ff2f1b07d2",
+        "created_at": "2024-05-28T17:12:06.282549",
+        "updated_at": "2024-05-28T17:12:06.282549",
+        "name": "jude boy",
+        "age": "4.5",
+        "__class__": "User"
+    },
+    "User.a31346fa-ab72-4dc4-b458-d8dbadc979b6": {
+        "id": "a31346fa-ab72-4dc4-b458-d8dbadc979b6",
+        "created_at": "2024-05-28T17:16:37.232792",
+        "updated_at": "2024-05-28T17:16:37.232792",
+        "name": "jude boy",
+        "__class__": "User"
+    },
+    "User.ea1686cf-a816-442e-b51f-066f4125fc31": {
+        "id": "ea1686cf-a816-442e-b51f-066f4125fc31",
+        "created_at": "2024-05-28T17:16:47.949173",
+        "updated_at": "2024-05-28T17:16:47.949173",
+        "name": "jude boy",
+        "age": "4.6",
+        "__class__": "User"
+    },
+    "User.13adc34b-0906-4777-b5ef-c961ac0af854": {
+        "id": "13adc34b-0906-4777-b5ef-c961ac0af854",
+        "created_at": "2024-05-28T17:26:24.562229",
+        "updated_at": "2024-05-28T17:26:24.562229",
+        "age": 4.6,
+        "__class__": "User"
+    },
+    "User.c259bd92-6750-4e92-82f0-a1ef5bbec650": {
+        "id": "c259bd92-6750-4e92-82f0-a1ef5bbec650",
+        "created_at": "2024-05-28T17:29:36.489485",
+        "updated_at": "2024-05-28T17:29:36.489485",
+        "age": 4,
+        "__class__": "User"
+    },
+    "State.5066814c-a156-4f16-867a-f687333c7a83": {
+        "id": "5066814c-a156-4f16-867a-f687333c7a83",
+        "created_at": "2024-05-28T18:06:37.066876",
+        "updated_at": "2024-05-28T18:06:37.066876",
+        "name": "California",
+        "__class__": "State"
+    },
+    "State.eaaba807-e23b-46b5-996d-2f1cbc340364": {
+        "id": "eaaba807-e23b-46b5-996d-2f1cbc340364",
+        "created_at": "2024-05-28T18:07:18.423759",
+        "updated_at": "2024-05-28T18:07:18.424754",
+        "name": "California",
+        "__class__": "State"
+    }
+}
