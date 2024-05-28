@@ -107,3 +107,17 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_storage_after_class_creation(self):
+        """ Check if class instance is created successfully"""
+
+        class_exist = storage.all()
+        initial_length = len(class_exist)
+
+        new_class = BaseModel()
+        new_class.name = "my name"
+        new_class.save()
+
+        updated_storage = storage.all()
+        updated_length = len(updated_storage)
+        self.assertEqual(updated_length, initial_length + 1)

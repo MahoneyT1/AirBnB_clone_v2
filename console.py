@@ -14,6 +14,7 @@ from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
+    
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
@@ -73,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] is'}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -114,17 +115,55 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+        """ Create an object of any class
+        Command syntax: create <Class name> <param 1> <param 2> <param 3>...
+        Param syntax: <key name>=<value>
+        """
+        # split the command line arguments into a list
+        command_line_args = args.split()
+
+        # check if class name is entered
+        if not command_line_args[0]:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif command_line_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        # create an empt obj to store extracted key:pair values
+        params = {}
+
+        # loop through command line args
+        # start count from 1, split and 
+        for element in command_line_args[1:]:
+            key, value = element.split("=")
+            key = key.replace("_", " ")  # Replace underscores with spaces in the key
+            value = value.replace("_", " ")
+            # check if value contains ""
+            # if yes strip them out
+            if value.startswith('"') and value.endswith('"'):
+                value = value.strip('"')
+            
+            # convert floating number to float() 
+            try:
+                if '.' in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+            except ValueError:
+                pass
+            # else store the value
+            params[key] = value
+        
+        # create an instance of chosen class
+        new_user_instance = HBNBCommand.classes[command_line_args[0]]()
+        
+        # loop through params and set the attributes
+        for k, v in params.items():
+            setattr(new_user_instance, k, v)
+        
+        # save the storage
         storage.save()
-        print(new_instance.id)
-        storage.save()
+        print(new_user_instance)
 
     def help_create(self):
         """ Help information for the create method """
