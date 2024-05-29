@@ -70,14 +70,14 @@ class DBStorage:
                     query_result = self.__session.querry(cls).all()
 
                     for obj in query_result:
-                        key = f"{__class__.__name__}.{obj.id}"
+                        key = f"{obj.__class__.__name__}.{obj.id}"
                         object[key] = obj
                     return object
             else:
                 query_result = self.__session.query(cls).all()
 
                 for obj in query_result:
-                    key = f"{__class__.__name__}.{obj.id}"
+                    key = f"{obj.__class__.__name__}.{obj.id}"
                     object[key] = obj
                 
                 return object
