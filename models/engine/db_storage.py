@@ -66,7 +66,7 @@ class DBStorage:
             if cls:
                 if cls in self.classes:
                     cls = self.classes[cls]
-                    return self.__session.querry(cls).all()
+                    return self.__session.query(cls).all()
             else:
                 object = {}
                 for class_name, class_type in self.classes.items():
