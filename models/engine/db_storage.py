@@ -67,12 +67,16 @@ class DBStorage:
                 if cls in self.classes:
                     object = {}
                     cls = self.classes[cls]
+<<<<<<< HEAD
                     query_result = self.__session.querry(cls).all()
 
                     for obj in query_result:
                         key = f"{__class__.__name__}.{obj.id}"
                         object[key] = obj
                     return object
+=======
+                    return self.__session.query(cls).all()
+>>>>>>> 4219c37f30c387c657491be5e2426b16f7a1c4a9
             else:
                 query_result = self.__session.query(cls).all()
 
