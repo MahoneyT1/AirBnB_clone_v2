@@ -246,14 +246,12 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             # create an object of storage
-            get_storage = storage.all()
-            for k, v in get_storage.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            object = storage.all(args)
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            object = storage.all()
 
+        for obj in object.values():
+            print_list.append(str(obj))
         print(print_list)
 
     def help_all(self):
