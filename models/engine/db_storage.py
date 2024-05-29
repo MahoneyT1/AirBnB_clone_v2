@@ -39,8 +39,10 @@ class DBStorage:
         # load evn
         load_dotenv()
 
+        con_string = os.getenv("CONN_STRING")
+
         # create engine
-        self.__engine = create_engine(os.getenv("CONN_STRING"),
+        self.__engine = create_engine(con_string,
                                       echo=True,
                                       pool_pre_ping=True
                                       )
