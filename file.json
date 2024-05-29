@@ -1,17 +1,1 @@
-{
-    "State.f832222a-4ecc-478c-b618-9df3034c00d8": {
-        "id": "f832222a-4ecc-478c-b618-9df3034c00d8",
-        "created_at": "2024-05-28T18:24:49.532504",
-        "updated_at": "2024-05-28T18:24:49.533504",
-        "name": "Fremont",
-        "state id": 145,
-        "__class__": "State"
-    },
-    "City.cb56c64f-a997-4200-a61f-8e750c8eaa2f": {
-        "id": "cb56c64f-a997-4200-a61f-8e750c8eaa2f",
-        "created_at": "2024-05-28T18:26:17.537670",
-        "updated_at": "2024-05-28T18:26:17.537670",
-        "name": "london",
-        "__class__": "City"
-    }
-}
+{"State.0356311f-24f5-4b06-af73-5d7f3bc7da9b": {"id": "0356311f-24f5-4b06-af73-5d7f3bc7da9b", "created_at": "2024-05-29T09:43:48.834657", "updated_at": "2024-05-29T09:43:48.834657", "name": "California", "__class__": "State"}, "State.8d22ab32-917c-4ba2-bd90-6fe92d3bb99d": {"id": "8d22ab32-917c-4ba2-bd90-6fe92d3bb99d", "created_at": "2024-05-29T09:43:48.841474", "updated_at": "2024-05-29T09:43:48.841474", "name": "Nevada", "__class__": "State"}}
