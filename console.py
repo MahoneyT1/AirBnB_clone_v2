@@ -131,7 +131,6 @@ class HBNBCommand(cmd.Cmd):
             return
         # create an empt obj to store extracted key:pair values
         params = {}
-
         # loop through command line args
         # start count from 1, split and 
         for element in command_line_args[1:]:
@@ -142,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
             # if yes strip them out
             if value.startswith('"') and value.endswith('"'):
                 value = value.strip('"')
-            
+
             # convert floating number to float() 
             try:
                 if '.' in value:
