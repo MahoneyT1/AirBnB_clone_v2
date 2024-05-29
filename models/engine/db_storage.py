@@ -89,7 +89,7 @@ class DBStorage:
         # session (self.__session)
         """
         try:
-            self.__session.commit(self)
+            self.__session.commit()
         except SQLAlchemyError as e:
             self.__session.rollback()
             print(f"Error committing session: {e}")
