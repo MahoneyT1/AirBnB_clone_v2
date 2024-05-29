@@ -70,7 +70,7 @@ class DBStorage:
             else:
                 object = {}
                 for class_name, class_type in self.classes.items():
-                    object[class_name] = self.__session.querry(class_type).all()
+                    object[class_name] = self.__session.query(class_type).all()
                 return object
         except SQLAlchemyError as e:
                 print(f"Error querring database: {e}")
