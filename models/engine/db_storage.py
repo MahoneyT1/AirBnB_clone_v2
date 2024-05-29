@@ -67,7 +67,7 @@ class DBStorage:
                 if cls in self.classes:
                     object = {}
                     cls = self.classes[cls]
-                    query_result = self.__session.querry(cls).all()
+                    query_result = self.__session.query(cls).all()
 
                     for obj in query_result:
                         key = f"{obj.__class__.__name__}.{obj.id}"
