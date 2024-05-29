@@ -65,12 +65,20 @@ class DBStorage:
         try:
             if cls:
                 if cls in self.classes:
+                    object = {}
                     cls = self.classes[cls]
-                    return self.__session.querry(cls).all()
+                    query_result = self.__session.querry(cls).all()
+
+                    for obj in query_result:
+                        key = f"{__class__.__name__}.{obj.id}"
+                        object[key] = obj
+                    return object
             else:
-                object = {}
-                for class_name, class_type in self.classes.items():
-                    object[class_name] = self.__session.query(class_type).all()
+                query_result = self.__session.query(cls).all()
+
+                for obj in query_result:
+                    key = f"{__class__.__name__}.{obj.id}"
+                    object[key] = obj
                 return object
         except SQLAlchemyError as e:
                 print(f"Error querring database: {e}")
