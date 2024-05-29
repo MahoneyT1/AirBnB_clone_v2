@@ -247,7 +247,7 @@ class HBNBCommand(cmd.Cmd):
                 return
             # create an object of storage
             get_storage = storage.all()
-            for k, v in self.storage.items():
+            for k, v in get_storage.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
