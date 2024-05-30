@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import os
 from models.base_model import Base
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session, DeclarativeBase
+from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -39,7 +39,6 @@ class DBStorage:
         # load evn
         load_dotenv()
 
-        Base = DeclarativeBase()
         con_string = os.getenv("CONN_STRING")
 
         # create engine
@@ -70,9 +69,17 @@ class DBStorage:
                 if cls in self.classes:
                     cls = self.classes[cls]
                     query_result = Session.query(cls).all()
-            else:
-                query_result = []
-                query_result = query_result.extend(Session.query(cls).all())
+                    for obj in query_result:
+                        key = f"{obj.__class__.__name__}.{obj.id}"
+                        object[key] = obj
+                    return object
+                else:
+                    query_result = []
+                    query_result = query_result.extend(Session.query(cls).all())
+                for obj in query_result:
+                    key = f"{obj.__class__.__name__}.{obj.id}"
+                    object[key] = obj
+                    return object
 
             for obj in query_result:
                 key = f"{obj.__class__.__name__}.{obj.id}"
@@ -80,24 +87,15 @@ class DBStorage:
             return object
         except SQLAlchemyError as e:
             print(f"Error querring database: {e}")
-<<<<<<< HEAD
-        
-=======
-        finally:
-            Session.close()
-            # for obj in query_result:
-            #     key = f"{obj.__class__.__name__}.{obj.id}"
-            #     object[key] = obj
-            #     return object
-
->>>>>>> afffa87d9ef02213a70eebf5ecca1bc2551c6b40
+           
     def new(self, obj):
         """
         add the object to the current database
         session (self.__session)
         """
         try:
-            self.__session.add(obj)
+            Session = self.__session()
+            Session.add(obj)
         except SQLAlchemyError as e:
             print(f"Error adding object to session: {e}")
 
@@ -107,7 +105,8 @@ class DBStorage:
         # session (self.__session)
         """
         try:
-            self.__session.commit()
+            Session = self.__session()
+            Session.commit()
         except SQLAlchemyError as e:
             self.__session.rollback()
             print(f"Error committing session: {e}")
@@ -118,7 +117,8 @@ class DBStorage:
         """
         try:
             if obj:
-                self.__session.delete(obj)
+                Session = self.__session()
+                Session.delete(obj)
         except SQLAlchemyError as e:
             print(f"deleting object in session error {e}")
 
@@ -127,10 +127,11 @@ class DBStorage:
         create all tables in the database
         """
         Base.metadata.create_all(self.__engine)
-        self.__session_factory = sessionmaker(bind=self.__engine,
+        session_factory = sessionmaker(bind=self.__engine,
                                               expire_on_commit=False)
-        self.__session = scoped_session(self.__session_factory)
+        self.__session = scoped_session(session_factory)
 
     def close(self):
         """Close the session."""
-        self.__session.remove()
+        Session = self.__session()
+        Session.close()
