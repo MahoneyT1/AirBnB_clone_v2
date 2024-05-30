@@ -63,26 +63,22 @@ class DBStorage:
         else returns all obj in database
         """
         try:
+            object = {}
+            Session = self.__session()
             if cls:
                 if cls in self.classes:
-                    object = {}
                     cls = self.classes[cls]
-                    query_result = self.__session.query(cls).all()
-
-                    for obj in query_result:
-                        key = f"{obj.__class__.__name__}.{obj.id}"
-                        object[key] = obj
-                    return object
+                    query_result = Session.query(cls).all()
             else:
-                query_result = self.__session.query(cls).all()
+                query_result = []
+                query_result = query_result.extend(Session.query(cls).all())
 
-                for obj in query_result:
-                    key = f"{obj.__class__.__name__}.{obj.id}"
-                    object[key] = obj
-                
-                return object
+            for obj in query_result:
+                key = f"{obj.__class__.__name__}.{obj.id}"
+                object[key] = obj
+            return object
         except SQLAlchemyError as e:
-                print(f"Error querring database: {e}")
+            print(f"Error querring database: {e}")
         
     def new(self, obj):
         """
