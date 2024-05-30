@@ -249,9 +249,9 @@ class HBNBCommand(cmd.Cmd):
             object = storage.all(args)
         else:
             object = storage.all()
-
-        for obj in object.values():
-            print_list.append(str(obj))
+            
+            for obj in object.values():
+                print_list.append(str(obj))
         print(print_list)
 
     def help_all(self):

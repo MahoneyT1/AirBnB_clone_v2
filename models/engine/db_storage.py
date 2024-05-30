@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import os
 from models.base_model import Base
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session, DeclarativeBase
+from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -39,7 +39,6 @@ class DBStorage:
         # load evn
         load_dotenv()
 
-        Base = DeclarativeBase()
         con_string = os.getenv("CONN_STRING")
 
         # create engine
@@ -47,7 +46,7 @@ class DBStorage:
                                       echo=True,
                                       pool_pre_ping=True
                                       )
-        if os.getenv('HBNB_ENV') == 'test':
+        if con_string == 'test':
             # drop all tables
             Base.metadata.drop_all(self.__engine)
         
@@ -62,30 +61,27 @@ class DBStorage:
         method that returns list of class present
         if cls is None returns all objects
         else returns all obj in database
-        """
-        try:
-            object = {}
-            Session = self.__session()
-            if cls:
-                if cls in self.classes:
-                    cls = self.classes[cls]
-                    query_result = Session.query(cls).all()
-            else:
-                query_result = []
-                query_result = query_result.extend(Session.query(cls).all())
 
-            for obj in query_result:
-                key = f"{obj.__class__.__name__}.{obj.id}"
-                object[key] = obj
-            return object
-        except SQLAlchemyError as e:
-            print(f"Error querring database: {e}")
-        finally:
-            Session.close()
-            # for obj in query_result:
-            #     key = f"{obj.__class__.__name__}.{obj.id}"
-            #     object[key] = obj
-            #     return object
+        """
+        new_object = {}
+
+        if cls:
+            # query cls if cls is not None
+
+            instance_class = self.classes.get(cls)
+
+            result = self.__session.query(instance_class).all()
+
+            for obj in result:
+                key = f"{cls.__class__.__name__}.{obj.id}"
+                new_object[key] = obj
+        else:
+            for class_name, class_obj in self.classes.items():
+                result = self.__session.query(class_obj)
+                for obj in result:
+                    key = f"{class_obj.__name__}.{obj.id}"
+                    new_object[key] = obj
+        return new_object
 
     def new(self, obj):
         """
@@ -93,7 +89,8 @@ class DBStorage:
         session (self.__session)
         """
         try:
-            self.__session.add(obj)
+            Session = self.__session()
+            Session.add(obj)
         except SQLAlchemyError as e:
             print(f"Error adding object to session: {e}")
 
@@ -103,7 +100,8 @@ class DBStorage:
         # session (self.__session)
         """
         try:
-            self.__session.commit()
+            Session = self.__session()
+            Session.commit()
         except SQLAlchemyError as e:
             self.__session.rollback()
             print(f"Error committing session: {e}")
@@ -114,7 +112,8 @@ class DBStorage:
         """
         try:
             if obj:
-                self.__session.delete(obj)
+                Session = self.__session()
+                Session.delete(obj)
         except SQLAlchemyError as e:
             print(f"deleting object in session error {e}")
 
@@ -123,10 +122,11 @@ class DBStorage:
         create all tables in the database
         """
         Base.metadata.create_all(self.__engine)
-        self.__session_factory = sessionmaker(bind=self.__engine,
+        session_factory = sessionmaker(bind=self.__engine,
                                               expire_on_commit=False)
-        self.__session = scoped_session(self.__session_factory)
+        self.__session = scoped_session(session_factory)
 
     def close(self):
         """Close the session."""
-        self.__session.remove()
+        Session = self.__session()
+        Session.close()
