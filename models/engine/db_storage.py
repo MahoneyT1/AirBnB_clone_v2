@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import os
 from models.base_model import Base
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker, scoped_session, DeclarativeBase
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -39,6 +39,7 @@ class DBStorage:
         # load evn
         load_dotenv()
 
+        Base = DeclarativeBase()
         con_string = os.getenv("CONN_STRING")
 
         # create engine
@@ -52,10 +53,10 @@ class DBStorage:
         
         # else create engine schema
         Base.metadata.create_all(self.__engine)
-        self.__session_factory = sessionmaker(bind=self.__engine,
+        session_factory = sessionmaker(bind=self.__engine,
                                               expire_on_commit=False)
-        self.__session = scoped_session(self.__session_factory)
-            
+        self.__session = scoped_session(session_factory)
+
     def all(self, cls=None):
         """
         method that returns list of class present
@@ -63,27 +64,29 @@ class DBStorage:
         else returns all obj in database
         """
         try:
+            object = {}
+            Session = self.__session()
             if cls:
                 if cls in self.classes:
-                    object = {}
                     cls = self.classes[cls]
-                    query_result = self.__session.query(cls).all()
-
-                    for obj in query_result:
-                        key = f"{obj.__class__.__name__}.{obj.id}"
-                        object[key] = obj
-                    return object
+                    query_result = Session.query(cls).all()
             else:
-                query_result = self.__session.query(cls).all()
+                query_result = []
+                query_result = query_result.extend(Session.query(cls).all())
 
-                for obj in query_result:
-                    key = f"{obj.__class__.__name__}.{obj.id}"
-                    object[key] = obj
-                
-                return object
+            for obj in query_result:
+                key = f"{obj.__class__.__name__}.{obj.id}"
+                object[key] = obj
+            return object
         except SQLAlchemyError as e:
-                print(f"Error querring database: {e}")
-        
+            print(f"Error querring database: {e}")
+        finally:
+            Session.close()
+            # for obj in query_result:
+            #     key = f"{obj.__class__.__name__}.{obj.id}"
+            #     object[key] = obj
+            #     return object
+
     def new(self, obj):
         """
         add the object to the current database
