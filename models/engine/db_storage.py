@@ -51,7 +51,7 @@ class DBStorage:
                                       echo=True,
                                       pool_pre_ping=True
                                       )
-        if con_string == 'test':
+        if os.getenv("HBNB_TYPE_STORAGE") == 'test':
             # drop all tables
             Base.metadata.drop_all(self.__engine)
         
@@ -79,6 +79,7 @@ class DBStorage:
             for obj in result:
                 key = f"{cls.__class__.__name__}.{obj.id}"
                 new_object[key] = obj
+                print(new_object)
         else:
             for class_name, class_obj in self.classes.items():
                 result = self.__session.query(class_obj)
