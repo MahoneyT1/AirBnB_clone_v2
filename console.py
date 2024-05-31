@@ -157,11 +157,21 @@ class HBNBCommand(cmd.Cmd):
         # create an instance of chosen class
         new_user_instance = HBNBCommand.classes[command_line_args[0]]()
         
-        # loop through params and set the attributes
+        # create a new dict
+        ready_command = {}
+
+        # loop through params and check for isolated string in keys
+        # replace with underscore
         for k, v in params.items():
             if isinstance(k, str) and " " in k:
-                upk = k.replace(" ", "_")
-            setattr(new_user_instance, upk, v)
+                updated_k = k.replace(" ", "_")
+                ready_command[updated_k] = v
+            else:
+                ready_command[k] = v
+        
+        # loop through ready_command and set the attributes
+        for key, value in ready_command.items():
+            setattr(new_user_instance, key, value)
         
         # save the storage
         new_user_instance.save()
