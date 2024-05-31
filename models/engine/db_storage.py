@@ -78,9 +78,8 @@ class DBStorage:
 
             for obj in result:
                 key = f"{instance_class.__name__}.{obj.id}"
-                print(key)
-                print(obj)
                 new_object[key] = obj.to_dict()
+                print(f"new_object after adding: {new_object}")
         else:
             for class_name, class_obj in self.classes.items():
                 result = self.__session.query(class_obj)
