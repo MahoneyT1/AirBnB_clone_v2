@@ -247,7 +247,7 @@ class HBNBCommand(cmd.Cmd):
                 return
             # create an object of storage
             object = storage.all(args)
-            for obj in object.values():
+            for obj in object:
                 print_list.append(obj)
             print(print_list)
         else:
