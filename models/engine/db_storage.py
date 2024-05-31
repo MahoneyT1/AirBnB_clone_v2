@@ -77,14 +77,14 @@ class DBStorage:
 
             for obj in result:
                 key = f"{instance_class.__name__}.{obj.id}"
-                new_object[key] = obj.to_dict()
+                new_object[key] = obj
         else:
             for class_name, class_obj in self.classes.items():
                 result = self.__session.query(class_obj)
                 print(f"Query result: {result}")
                 for obj in result:
                     key = f"{class_obj.__name__}.{obj.id}"
-                    new_object[key] = obj.to_dict()
+                    new_object[key] = obj
                 return self.new_object
     def new(self, obj):
         """
