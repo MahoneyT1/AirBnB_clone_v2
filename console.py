@@ -159,6 +159,7 @@ class HBNBCommand(cmd.Cmd):
         
         # loop through params and set the attributes
         for k, v in params.items():
+            print(k, v)
             setattr(new_user_instance, k, v)
         
         # save the storage
