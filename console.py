@@ -159,8 +159,9 @@ class HBNBCommand(cmd.Cmd):
         
         # loop through params and set the attributes
         for k, v in params.items():
-            print(k, v)
-            setattr(new_user_instance, k, v)
+            if isinstance(k, str) and " " in k:
+                upk = k.replace(" ", "_")
+            setattr(new_user_instance, upk, v)
         
         # save the storage
         new_user_instance.save()
