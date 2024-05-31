@@ -67,6 +67,7 @@ class DBStorage:
         if cls is None returns all objects
         else returns all obj in database
         """
+        from models.base_model import BaseModel
         new_object = {}
 
         if cls:
@@ -77,14 +78,17 @@ class DBStorage:
 
             for obj in result:
                 key = f"{cls.__class__.__name__}.{obj.id}"
-                new_object[key] = obj.to_dict()
+                print(key)
+                print(obj)
+                new_object[key] = obj
         else:
             for class_name, class_obj in self.classes.items():
                 result = self.__session.query(class_obj)
                 print(f"Query result: {result}")
                 for obj in result:
                     key = f"{class_obj.__name__}.{obj.id}"
-                    new_object[key] = obj.to_dict()
+                    new_object[key] = obj
+                print(new_object)
         return new_object
     def new(self, obj):
         """
