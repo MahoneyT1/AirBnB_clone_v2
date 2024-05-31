@@ -71,9 +71,7 @@ class DBStorage:
 
         if cls:
             # query cls if cls is not None
-
             instance_class = self.classes.get(cls)
-
             result = self.__session.query(instance_class).all()
 
             for obj in result:
@@ -87,31 +85,6 @@ class DBStorage:
                     key = f"{class_obj.__name__}.{obj.id}"
                     new_object[key] = obj
         return new_object
-        try:
-            object = {}
-            Session = self.__session()
-            if cls:
-                if cls in self.classes:
-                    cls = self.classes[cls]
-                    query_result = Session.query(cls).all()
-                    for obj in query_result:
-                        key = f"{obj.__class__.__name__}.{obj.id}"
-                        object[key] = obj
-                    return object
-                else:
-                    query_result = []
-                    query_result = query_result.extend(Session.query(cls).all())
-                for obj in query_result:
-                    key = f"{obj.__class__.__name__}.{obj.id}"
-                    object[key] = obj
-                    return object
-
-            for obj in query_result:
-                key = f"{obj.__class__.__name__}.{obj.id}"
-                object[key] = obj
-            return object
-        except SQLAlchemyError as e:
-            print(f"Error querring database: {e}")
     def new(self, obj):
         """
         add the object to the current database
@@ -121,7 +94,8 @@ class DBStorage:
             Session = self.__session()
             Session.add(obj)
         except SQLAlchemyError as e:
-            print(f"Error adding object to session: {e}")
+            print(f"Error adding object to Session: {e}")
+            Session.rollback()
 
     def save(self):
         """
@@ -129,10 +103,8 @@ class DBStorage:
         # session (self.__session)
         """
         try:
-            Session = self.__session()
-            Session.commit()
+            self.__session.commit()
         except SQLAlchemyError as e:
-            self.__session.rollback()
             print(f"Error committing session: {e}")
 
     def delete(self, obj=None):
@@ -141,8 +113,7 @@ class DBStorage:
         """
         try:
             if obj:
-                Session = self.__session()
-                Session.delete(obj)
+                self.__session.delete(obj)
         except SQLAlchemyError as e:
             print(f"deleting object in session error {e}")
 
@@ -157,5 +128,4 @@ class DBStorage:
 
     def close(self):
         """Close the session."""
-        Session = self.__session()
-        Session.close()
+        self.__sessionclose()
