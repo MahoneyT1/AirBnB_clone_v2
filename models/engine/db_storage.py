@@ -88,7 +88,7 @@ class DBStorage:
                     key = f"{class_obj.__name__}.{obj.id}"
                     new_object[key] = obj.to_dict()
                     print(f"new_object after adding: {new_object}")
-                return new_object
+                return self.new_object
     def new(self, obj):
         """
         add the object to the current database
