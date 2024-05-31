@@ -73,6 +73,7 @@ class DBStorage:
             # query cls if cls is not None
             instance_class = self.classes.get(cls)
             result = self.__session.query(instance_class).all()
+            print(f"Query result: {result}")
 
             for obj in result:
                 key = f"{cls.__class__.__name__}.{obj.id}"
@@ -81,6 +82,7 @@ class DBStorage:
         else:
             for class_name, class_obj in self.classes.items():
                 result = self.__session.query(class_obj)
+                print(f"Query result: {result}")
                 for obj in result:
                     key = f"{class_obj.__name__}.{obj.id}"
                     new_object[key] = obj
