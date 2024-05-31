@@ -77,7 +77,7 @@ class DBStorage:
             print(f"Query result: {result}")
 
             for obj in result:
-                key = f"{instance_class.__class__.__name__}.{obj.id}"
+                key = f"{instance_class.__name__}.{obj.id}"
                 print(key)
                 print(obj)
                 new_object[key] = obj.to_dict()
