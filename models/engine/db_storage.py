@@ -77,11 +77,10 @@ class DBStorage:
             print(f"Query result: {result}")
 
             for obj in result:
-                key = f"{cls.__class__.__name__}.{obj.id}"
+                key = f"{instance_class.__class__.__name__}.{obj.id}"
                 print(key)
                 print(obj)
                 new_object[key] = obj.to_dict()
-            return new_object
         else:
             for class_name, class_obj in self.classes.items():
                 result = self.__session.query(class_obj)
@@ -90,7 +89,7 @@ class DBStorage:
                     key = f"{class_obj.__name__}.{obj.id}"
                     new_object[key] = obj.to_dict()
                 print(new_object)
-            return new_object
+        return new_object
     def new(self, obj):
         """
         add the object to the current database
