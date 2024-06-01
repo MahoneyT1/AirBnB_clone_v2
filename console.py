@@ -170,6 +170,7 @@ class HBNBCommand(cmd.Cmd):
                 ready_command[k] = v
         
         # loop through ready_command and set the attributes
+
         for key, value in ready_command.items():
             setattr(new_user_instance, key, value)
         
