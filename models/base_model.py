@@ -4,7 +4,7 @@ import uuid
 from datetime import datetime
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, String, DateTime
-from models import storage
+
 
 Base = declarative_base()
 
@@ -18,6 +18,7 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
+        from models import storage
         if not kwargs:
             
             self.id = str(uuid.uuid4())
