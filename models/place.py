@@ -2,6 +2,15 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float
+from city import City
+from user import User
+from models.__init__ import storage
+
+# call the class engine storage attribute
+local_session = storage.__session
+
+# call the class session attribute of Dbs
+local_engine = storage.__engine
 
 
 class Place(BaseModel, Base):
@@ -18,3 +27,12 @@ class Place(BaseModel, Base):
     latitude = Column(Float(), default=0, nullable=True)
     longitude = Column(Float(), default=0, nullable=True)
     amenity_ids = []
+
+# create the database schema
+Base.metadata.create_all(local_engine)
+
+# add the new changes
+storage.new(Place)
+
+# commit to database
+storage.save()

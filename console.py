@@ -265,7 +265,7 @@ class HBNBCommand(cmd.Cmd):
             print(print_list)
         else:
             object = storage.all()
-            
+
             for obj in object.values():
                 print_list.append(str(obj))
             print(print_list)

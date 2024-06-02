@@ -67,14 +67,14 @@ class DBStorage:
         if cls is None returns all objects
         else returns all obj in database
         """
-        from models.base_model import BaseModel
+        # from models.base_model import BaseModel
         new_list = []
 
         if cls:
             # query cls if cls is not None
             instance_class = self.classes.get(cls)
             result = self.__session.query(instance_class).all()
-            
+
             new_object = {}
             for obj in result:
                 key = f"{instance_class.__name__}.{obj.id}"
