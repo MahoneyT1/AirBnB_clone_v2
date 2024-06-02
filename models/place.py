@@ -2,8 +2,6 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float
-from city import City
-from user import User
 from models.__init__ import storage
 
 # call the class engine storage attribute
