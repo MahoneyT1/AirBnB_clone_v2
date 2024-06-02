@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """This module defines a class User"""
-from models.base_model import BaseModel, Base
+from models.base_model import BaseModel, Base, storage
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models.__init__ import storage
+
 
 
 # call the class engine storage attribute

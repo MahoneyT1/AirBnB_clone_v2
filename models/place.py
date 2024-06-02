@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models.base_model import BaseModel, Base
+from models.base_model import BaseModel, Base, storage
 from sqlalchemy import Column, String, ForeignKey, Integer, Float
-from models.__init__ import storage
+
 
 # call the class engine storage attribute
 local_session = storage.__session

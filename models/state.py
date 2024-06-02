@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
-from models.base_model import BaseModel, Base
+from models.base_model import BaseModel, Base, storage
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 from models.city import City
-from models.__init__ import storage
+
 
 # call the class engine storage attribute
 local_session = storage.__session
