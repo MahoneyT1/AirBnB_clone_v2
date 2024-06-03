@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 from dotenv import load_dotenv
 import os
-from models.base_model import Base
+from models.base_model import Base, BaseModel
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.exc import SQLAlchemyError
@@ -60,6 +60,7 @@ class DBStorage:
         session_factory = sessionmaker(bind=self.__engine,
                                               expire_on_commit=False)
         self.__session = scoped_session(session_factory)
+        return (self.__engine, self.__session)
 
     def all(self, cls=None):
         """

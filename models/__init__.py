@@ -2,10 +2,6 @@
 """This module instantiates an object of class FileStorage"""
 import os
 from dotenv import load_dotenv
-# from models.place import Place
-# from models.city import City
-# from models.state import State
-# from models. user import User
 
 
 load_dotenv()
