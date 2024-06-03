@@ -78,7 +78,7 @@ class DBStorage:
             new_object = {}
             for obj in result:
                 key = f"{instance_class.__name__}.{obj.id}"
-                new_object[key] = obj.to_dict()
+                new_object[key] = obj#.to_dict()
                 new_list.append(new_object)
             return new_list
         else:
@@ -87,7 +87,7 @@ class DBStorage:
                 print(f"Query result: {result}")
                 for obj in result:
                     key = f"{class_obj.__name__}.{obj.id}"
-                    new_object[key] = obj.to_dict()
+                    new_object[key] = obj#.to_dict()
                     new_list.append(new_object)
                 return new_list
     def new(self, obj):
