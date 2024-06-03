@@ -89,22 +89,3 @@ class FileStorage:
 
             if obj_key is not None:
                 del self.__objects[obj_key]
-
-    def cities(self, state_id):
-        """
-        for FileStorage: getter attribute cities that returns the list
-        of City instances with state_id equals to the current State.id =>
-        It will be the FileStorage relationship
-        between State and City
-        """
-        # create an empty list
-        list_of_city = []
-
-        # city class var
-        city = self.classes['City']
-
-        # loop through all the instances on City
-        for cls in self.all(cls=city):
-            if cls.id == state_id: # if class.id == State_id passed as var
-                list_of_city.append(cls) # append instance
-        return list_of_city
