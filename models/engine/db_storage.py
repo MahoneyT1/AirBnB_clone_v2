@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 from dotenv import load_dotenv
 import os
-from models.base_model import Base, BaseModel
+from models.base_model import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.exc import SQLAlchemyError
