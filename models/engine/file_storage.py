@@ -89,3 +89,5 @@ class FileStorage:
 
             if obj_key is not None:
                 del self.__objects[obj_key]
+    def close(self):
+        self.reload()
