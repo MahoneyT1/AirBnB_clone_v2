@@ -25,7 +25,7 @@ class DBStorage:
 
     # object containing key/pair of all the class
     classes = {
-    'BaseModel': BaseModel,
+    # 'BaseModel': BaseModel,
     'User': User,
     'Place': Place,
     'State': State,
