@@ -77,7 +77,7 @@ class DBStorage:
 
             new_object = {}
             for obj in result:
-                key = f"{instance_class.__class.__.__name__}.{obj.id}"
+                key = f"{instance_class.__name__}.{obj.id}"
                 new_object[key] = obj.to_dict()
                 new_list.append(new_object)
             return new_list
