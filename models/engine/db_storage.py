@@ -77,7 +77,7 @@ class DBStorage:
 
             new_object = {}
             for obj in result:
-                key = f"{__class__.__name__}.{obj.id}"
+                key = f"{obj.__class__.__name__}.{obj.id}"
                 new_object[key] = obj.to_dict()
                 new_list.append(new_object)
             return new_list
@@ -85,7 +85,7 @@ class DBStorage:
             for class_name, class_obj in self.classes.items():
                 result = self.__session.query(class_obj)
                 for obj in result:
-                    key = f"{class_obj.__class__.__name__}.{obj.id}"
+                    key = f"{obj.__class__.__name__}.{obj.id}"
                     new_object[key] = obj.to_dict()
                     new_list.append(new_object)
                 return new_list
