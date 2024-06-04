@@ -75,19 +75,19 @@ class DBStorage:
             instance_class = self.classes.get(cls)
             result = self.__session.query(instance_class).all()
 
-            #new_object = {}
+            new_object = {}
             for obj in result:
-                key = f"{instance_class.__name__}.{obj.id}"
-                #new_object[key] = obj.to_dict()
-                new_list.append(obj.to_dict())
+                key = f"{__class__.__name__}.{obj.id}"
+                new_object[key] = obj.to_dict()
+                new_list.append(new_object)
             return new_list
         else:
             for class_name, class_obj in self.classes.items():
                 result = self.__session.query(class_obj)
                 for obj in result:
-                    key = f"{class_obj.__name__}.{obj.id}"
-                    #new_object[key] = obj.to_dict()
-                    new_list.append(obj.to_dict())
+                    key = f"{class_obj.__class__.__name__}.{obj.id}"
+                    new_object[key] = obj.to_dict()
+                    new_list.append(new_object)
                 return new_list
     def new(self, obj):
         """
