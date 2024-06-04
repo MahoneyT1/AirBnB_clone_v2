@@ -89,5 +89,35 @@ class FileStorage:
 
             if obj_key is not None:
                 del self.__objects[obj_key]
+    
+    @property
+    def amenities(self):
+        from models.amenity import Amenity
+        clss = {'Amenity': Amenity}
+        amenity_list = []
+
+        for obj in self.__objects.items():
+            if obj == clss['Amenity']:
+                amenity_list.append(obj)
+        return amenity_list
+    
+    @amenities.setter
+    def amenities(self, Amenity_id):
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
+
+        classes = {
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
+        if hasattr(Amenity, 'amenity_ids'):
+            setattr(Amenity, 'amenity_ids', Amenity_id)
+
     def close(self):
         self.reload()
