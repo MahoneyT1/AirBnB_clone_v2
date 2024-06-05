@@ -79,32 +79,6 @@ class DBStorage:
                 for obj in result:
                     new_list.append(obj.to_dict())
             return new_list
-    # def all(self, cls=None):
-    #     """
-    #     method that returns list of class present
-    #     if cls is None returns all objects
-    #     else returns all obj in database
-    #     """
-    #     # from models.base_model import BaseModel
-    #     new_list = []
-        
-    #     if cls:
-    #         # query cls if cls is not None
-    #         instance_class = self.classes.get(cls)
-    #         result = self.__session.query(instance_class).all()
-    #         new_object = {}
-    #         for obj in result:
-    #             key = "{}.{}".format(obj.__class__.__name__, obj.id)
-    #             new_object[key] = obj.to_dict()
-    #         return new_list
-    #     else:
-    #         for class_name, class_obj in self.classes.items():
-    #             result = self.__session.query(class_obj).all()
-    #             key = "{}.{}".format(obj.__class__.__name__, obj.id)
-    #             for obj in result:
-    #                 new_object[key] = obj.to_dict()
-    #                 new_list.append(new_object)
-    #             return new_list
 
     def new(self, obj):
         """
