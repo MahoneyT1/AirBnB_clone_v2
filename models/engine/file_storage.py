@@ -81,9 +81,9 @@ class FileStorage:
             return
         
         for elem in self.__objects.items():
-            if elem == obj
-            del self.__objects[elem]
-            FileStorage.save()
+            if elem == obj:
+                del self.__objects[elem]
+                FileStorage.save()
     
     
 
