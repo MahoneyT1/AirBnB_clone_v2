@@ -79,16 +79,11 @@ class FileStorage:
 
         if obj is None:
             return
-        else:
-            # delete obj from __objects if it’s inside
-            obj_key = None
-            for key, val in self.__objects.items():
-                if val == obj:
-                    obj_key = key
-                    break
-
-            if obj_key is not None:
-                del self.__objects[obj_key]
+        
+        for elem in self.__objects.items():
+            if elem == obj
+            del self.__objects[elem]
+            FileStorage.save()
     
     
 
