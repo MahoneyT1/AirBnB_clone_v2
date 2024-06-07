@@ -82,7 +82,7 @@ class DBStorage:
                     result = self.__session.query(class_name).all()
 
                     for dat in result:
-                        key = f"{dat.__class__.__name__} ({dat.id})"
+                        key = f"{__class__.__name__} ({id})"
                         new_obj[key] = dat.to_dict()
                         new_list.append(new_obj)
                         
