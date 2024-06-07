@@ -1,10 +1,9 @@
 {
-    "City.3ae79e35-1e5c-4aa8-91bc-0689880add5a": {
-        "id": "3ae79e35-1e5c-4aa8-91bc-0689880add5a",
-        "created_at": "2024-05-31T15:32:07.040678",
-        "updated_at": "2024-05-31T15:32:07.046425",
-        "state_id": "95a5abab-aa65-4861-9bc6-1da4a36069aa",
-        "name": "San Francisco",
-        "__class__": "City"
+    "State.34d63247-98b5-41a0-ba0f-c0223c43d86f": {
+        "id": "34d63247-98b5-41a0-ba0f-c0223c43d86f",
+        "created_at": "2024-06-07T12:00:33.647827",
+        "updated_at": "2024-06-07T12:00:33.647827",
+        "name": "Nevada",
+        "__class__": "State"
     }
 }

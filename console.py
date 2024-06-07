@@ -260,15 +260,14 @@ class HBNBCommand(cmd.Cmd):
                 return
             # create an object of storage
             object = storage.all(args)
-            for obj in object:
-                print_list.append(obj)
-            print(print_list)
+            print(object)  
         else:
             object = storage.all()
 
             for obj in object.values():
                 print_list.append(str(obj))
             print(print_list)
+
 
     def help_all(self):
         """ Help information for the all command """

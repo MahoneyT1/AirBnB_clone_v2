@@ -10,11 +10,36 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models of type"""
-        if cls:
-            my_list = []
-            for cls in self.__objects.copy():
-                my_list.append(cls)
-            return my_list                
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
+
+        # import and stage classes
+        classes = {
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
+        # create an empty to be returned
+        new_list = []
+
+        # open the file using with function for auto file close
+        with open(self.__file_path, 'r') as file:
+            # extract json file and parse to python object
+            data = json.load(file)
+
+            # emply object to store
+            new_object = {}
+            # iterate through new obj and create a key structure
+            for ob, v in new_object.items():
+                key = f"[{ob.__class__.__name__}] ({ob.id})"
+                # parse newly created obj to file storage
+                self.__objects[key] = v
+            return self.__objects
 
     def new(self, obj):
         """ 
@@ -76,16 +101,19 @@ class FileStorage:
         sucess:
             deletes object from filestorage
         """
-
+        # class passed is None return / do nothing
         if obj is None:
             return
         
-        for elem in self.__objects.items():
-            if elem == obj:
-                del self.__objects[elem]
-                FileStorage.save()
-    
-    
+        key_to_delete = None
+        # find the key to delete
+        for k, v in self.__objects.items():
+            if v == obj:
+                key_to_delete = k
+        # delete the obj
+        del self.__objects[key_to_delete]
+        # save the file storage
+        self.save()
 
     def close(self):
         self.reload()
