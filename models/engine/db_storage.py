@@ -79,14 +79,8 @@ class DBStorage:
                     new_obj = {}
                     class_name = v
                     result = self.__session.query(class_name).all()
-                    
-                    
-                    for key, value in new_obj.items():
-                        key_pass = f"[{value.__class__.__name__}] ({value.id})"
-                        if key in value.keys():
-                            new_obj[key] = value.to_dict()
-                        new_list.append(new_obj)
-                    return new_list
+                return result
+        
 
 
                 
