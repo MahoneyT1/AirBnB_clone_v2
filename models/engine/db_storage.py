@@ -65,9 +65,13 @@ class DBStorage:
         new_list = []
 
         if cls:
-            if cls in self.classes.items():
-                result = self.__session.query(cls).all()
-                print(result)
+            for k, v in self.classes.items():
+                if v == cls:
+                    result = self.__session.query(v).all()
+
+                    for data in result:
+                        new_list.append(data)
+            return new_list
 
 
     def new(self, obj):
