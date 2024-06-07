@@ -65,20 +65,10 @@ class DBStorage:
         new_list = []
 
         if cls:
-            instance_class = self.classes.get(cls.__name__)
-            if instance_class is None:
-                return new_list  # Return an empty list if the class is not found
+            if cls in self.classes[cls]:
+                result = self.__session.query(cls).all()
+                print(result)
 
-            result = self.__session.query(instance_class).all()
-            for obj in result:
-                new_list.append(obj.to_dict())
-            return new_list
-        else:
-            for class_name, class_obj in self.classes.items():
-                result = self.__session.query(class_obj).all()
-                for obj in result:
-                    new_list.append(obj.to_dict())
-            return new_list
 
     def new(self, obj):
         """
