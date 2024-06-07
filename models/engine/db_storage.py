@@ -65,7 +65,7 @@ class DBStorage:
         new_list = []
 
         if cls:
-            if cls in self.classes[cls]:
+            if cls in self.classes.items():
                 result = self.__session.query(cls).all()
                 print(result)
 
