@@ -72,6 +72,7 @@ class DBStorage:
         value = object
         """
         new_list = []
+        result = None
 
         if cls:
             for k, v in self.classes.items():
