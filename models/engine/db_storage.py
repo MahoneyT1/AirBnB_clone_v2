@@ -62,17 +62,30 @@ class DBStorage:
         self.__session = scoped_session(session_factory)
 
     def all(self, cls=None):
+        """
+        query on the current database session (self.__session) all objects depending of the class name
+        (argument cls)
+
+        if cls=None, query all types of objects (User, State, City, Amenity, Place and Review)
+        this method must return a dictionary: (like FileStorage)
+        key = <class-name>.<object-id>
+        value = object
+        """
         new_list = []
 
         if cls:
             for k, v in self.classes.items():
-                if v == cls:
-                    result = self.__session.query(v).all()
-
+                if k == cls:
+                    new_obj = {}
+                    class_name = v
+                    result = self.__session.query(class_name).all()
+                    
                     for data in result:
-                        new_list.append(data)
-            return new_list
+                        new_list.append(data.to_dict())
 
+
+                
+               
 
     def new(self, obj):
         """
