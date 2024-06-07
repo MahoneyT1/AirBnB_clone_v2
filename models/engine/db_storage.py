@@ -80,8 +80,10 @@ class DBStorage:
                     new_obj = {}
                     class_name = v
                     result = self.__session.query(class_name).all()
-                    new_list.append(result.to_dict())
-                return new_list
+
+                    for dat in result:
+                        new_list.append(dat.to_dict())
+                    return new_list
         
 
 
