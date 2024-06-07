@@ -82,8 +82,8 @@ class DBStorage:
                     
                     
                     for data in result:
-                        key = f"[{data.__class__.__name__} ({data.id})"
-                        new_obj[key] = data.to_dict()
+                        key = f"[{data.__class__.__name__}] ({data.id})"
+                        new_obj[key] = data
                         new_list.append(new_obj)
                     return new_list
 
