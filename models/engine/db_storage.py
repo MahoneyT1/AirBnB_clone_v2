@@ -25,7 +25,7 @@ class DBStorage:
 
     # object containing key/pair of all the class
     classes = {
-    # 'BaseModel': BaseModel,
+    'BaseModel': BaseModel,
     'User': User,
     'Place': Place,
     'State': State,
@@ -80,8 +80,12 @@ class DBStorage:
                     class_name = v
                     result = self.__session.query(class_name).all()
                     
+                    
                     for data in result:
-                        new_list.append(data.to_dict())
+                        key = f"[{data.__class__.__name__} ({data.id})"
+                        new_obj[key] = data.to_dict()
+                        new_list.append(new_obj)
+                    return new_list
 
 
                 
