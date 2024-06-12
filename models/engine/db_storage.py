@@ -73,20 +73,24 @@ class DBStorage:
         """
         new_list = []
         result = None
+        new_dict = {}
 
         if cls:
-            for k, v in self.classes.items():
-                if k == cls:
-                    new_obj = {}
-                    class_name = v
-                    result = self.__session.query(class_name).all()
+            if isinstance(cls, str):
+                cls = self.classes.get(cls)
+            if cls:
+                result = self.__session.query(cls).all()
+                for obj in result:
+                    key = f"{obj.__class__.__name__}.{obj.id}"
+                    new_dict[key] = obj
+        else:
+            for cls_name, cls in self.classes.items():
+                result = self.__session.query(cls).all()
+                for obj in result:
+                    key = f"{obj.__class__.__name__}.{obj.id}"
+                    new_dict[key] = obj
 
-                    for dat, v in self.classes.items():
-                        key = f"{v.__class__.__name__} ({v.id})"
-                        new_obj[key] = v.to_dict()
-                        new_list.append(new_obj)
-                        
-                    return new_obj
+        return new_dict
 
     def new(self, obj):
         """
@@ -94,11 +98,10 @@ class DBStorage:
         session (self.__session)
         """
         try:
-            Session = self.__session()
-            Session.add(obj)
+            self.__session.add(obj)
         except SQLAlchemyError as e:
             print(f"Error adding object to Session: {e}")
-            Session.rollback()
+            self.__session.rollback()
 
     def save(self):
         """
