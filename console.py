@@ -120,6 +120,7 @@ class HBNBCommand(cmd.Cmd):
         Command syntax: create <Class name> <param 1> <param 2> <param 3>...
         Param syntax: <key name>=<value>
         """
+        from models import storage
         # split the command line arguments into a list
         command_line_args = args.split()
 
@@ -175,7 +176,8 @@ class HBNBCommand(cmd.Cmd):
             setattr(new_user_instance, key, value)
 
         # save the storage
-        new_user_instance.save()
+        storage.save()
+        # new_user_instance.
         print(new_user_instance.id)
 
     def help_create(self):

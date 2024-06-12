@@ -87,12 +87,6 @@ class DBStorage:
                         new_list.append(new_obj)
                         
                     return new_obj
-        
-        
-
-
-                
-               
 
     def new(self, obj):
         """
