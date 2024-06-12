@@ -168,12 +168,12 @@ class HBNBCommand(cmd.Cmd):
                 ready_command[updated_k] = v
             else:
                 ready_command[k] = v
-        
+
         # loop through ready_command and set the attributes
 
         for key, value in ready_command.items():
             setattr(new_user_instance, key, value)
-        
+
         # save the storage
         new_user_instance.save()
         print(new_user_instance.id)
@@ -258,16 +258,34 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            # create an object of storage
-            object = storage.all(args)
-            print(object)  
-        else:
-            object = storage.all()
 
-            for obj in object.values():
-                print_list.append(str(obj))
+            # create an object of storage and call all method on it
+            data = storage.all(cls=args)
+            # loop through items in data
+            for key, value in data.items():
+                new_obj = {}
+                new_obj[key] = value
+                print_list.append(new_obj)
             print(print_list)
-
+        else:
+            # create an object of storage and call all method on it
+            data = storage.all()
+            # loop through items in data
+            for key, value in data.items():
+                # check if value has attribut of to_dict method
+                if hasattr(value, 'to_dict'):
+                    # if yes then call the method of value
+                    obj_dict = value.to_dict()
+                    # create a key for the new obj
+                    obj_class_name = value.__class__.__name__
+                    obj_id = obj_dict.get('id', id(value))
+                    formatted_obj = f"[{obj_class_name}] ({obj_id}) {obj_dict}"
+                    # append and print as a list
+                    print_list.append(formatted_obj)
+                else:
+                    # is doesnt have attribute id
+                    print(f"Object of type {type(value)} does not have to_dict method")
+            print(print_list)
 
     def help_all(self):
         """ Help information for the all command """

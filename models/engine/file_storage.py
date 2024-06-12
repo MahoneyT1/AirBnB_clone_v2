@@ -25,20 +25,23 @@ class FileStorage:
             'Review': Review
         }
         # create an empty to be returned
-        new_list = []
-
-        # open the file using with function for auto file close
-        with open(self.__file_path, 'r') as file:
-            # extract json file and parse to python object
-            data = json.load(file)
-
-            # emply object to store
-            new_object = {}
-            # iterate through new obj and create a key structure
-            for ob, v in new_object.items():
-                key = f"[{ob.__class__.__name__}] ({ob.id})"
-                # parse newly created obj to file storage
-                self.__objects[key] = v
+        new_obj = {}
+        
+        # if cls in not None
+        if cls:
+            # check if cls is a string if so parse the name to classes
+            # and obtain the class that matches the cls
+            cls_name = cls if isinstance(cls, str) else cls.__name__
+            for k, v in self.__objects.items():
+                if isinstance(v, classes[cls_name]):
+                    # split the value to extract name and the id
+                    class_name, class_id = k.split('.')
+                    # construct a key for the custom dictionary
+                    key = f"[{class_name}] ({class_id})"
+                    new_obj[str(key)] = v.to_dict()
+            return new_obj
+        else:
+            # if cls is None
             return self.__objects
 
     def new(self, obj):
@@ -102,7 +105,7 @@ class FileStorage:
         # class passed is None return / do nothing
         if obj is None:
             return
-        
+
         key_to_delete = None
         # find the key to delete
         for k, v in self.__objects.items():
