@@ -264,16 +264,15 @@ class HBNBCommand(cmd.Cmd):
             # create an object of storage and call all method on it
             data = storage.all(cls=self.classes[args])
             # loop through items in data
-            for key, value in data.items():
+            for value in data:
                 new_obj = {}
-                new_obj[key] = value
-                print_list.append(new_obj)
+                print_list.append(value)
             print(print_list)
         else:
             # create an object of storage and call all method on it
             data = storage.all()
             # loop through items in data
-            for key, value in data.items():
+            for value in data:
                 # check if value has attribut of to_dict method
                 if hasattr(value, 'to_dict'):
                     # if yes then call the method of value
