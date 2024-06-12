@@ -176,6 +176,7 @@ class HBNBCommand(cmd.Cmd):
             setattr(new_user_instance, key, value)
 
         # save the storage
+        storage.new(new_user_instance)
         storage.save()
         # new_user_instance.
         print(new_user_instance.id)
@@ -262,9 +263,10 @@ class HBNBCommand(cmd.Cmd):
                 return
 
             # create an object of storage and call all method on it
-            data = storage.all(cls=self.classes[args])
+            cls = self.classes[args]
+            data = storage.all(cls=cls)
             # loop through items in data
-            for value in data:
+            for k, value in data.items():
                 new_obj = {}
                 print_list.append(value)
             print(print_list)
