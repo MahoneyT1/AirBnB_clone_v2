@@ -262,7 +262,7 @@ class HBNBCommand(cmd.Cmd):
                 return
 
             # create an object of storage and call all method on it
-            data = storage.all(cls=args)
+            data = storage.all(cls=self.classes[args])
             # loop through items in data
             for key, value in data.items():
                 new_obj = {}
