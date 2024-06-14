@@ -115,18 +115,6 @@ class FileStorage:
         del self.__objects[key_to_delete]
         # save the file storage
         self.save()
-    
-    
-
-        # import and stage classes
-        classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
-        }
-        # create an empty to be returned
-        review_obj = {}
-
 
     def close(self):
         self.reload()

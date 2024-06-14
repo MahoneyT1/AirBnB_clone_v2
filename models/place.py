@@ -24,7 +24,7 @@ class Place(BaseModel, Base):
     latitude = Column(Float(), default=0, nullable=True)
     longitude = Column(Float(), default=0, nullable=True)
     amenity_ids = []
-    amenities = relationship('Amenity', secondary=place_amenity, viewonly=False)
+    amenities = relationship('Amenity', secondary=place_amenity, back_populates='place_amenities')
 
     @property
     def amenities(self):
