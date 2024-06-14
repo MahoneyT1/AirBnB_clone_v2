@@ -54,7 +54,7 @@ class DBStorage:
         if os.getenv("HBNB_TYPE_STORAGE") == 'test':
             # drop all tables
             Base.metadata.drop_all(self.__engine)
-        
+
         # else create engine schema
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,

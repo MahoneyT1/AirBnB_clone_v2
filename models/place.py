@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
+from os import getenv
 
 place_amenity = Table(
     'place_amenity', Base.metadata,
@@ -24,18 +25,25 @@ class Place(BaseModel, Base):
     latitude = Column(Float(), default=0, nullable=True)
     longitude = Column(Float(), default=0, nullable=True)
     amenity_ids = []
-    amenities = relationship('Amenity', secondary=place_amenity, back_populates='place_amenities')
 
-    @property
-    def amenities(self):
-        from models.amenity import Amenity
-        clss = {'Amenity': Amenity}
-        amenity_list = []
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        reviews = relationship("Review", cascade='all, delete, delete-orphan',
+                               backref="place")
 
-        for obj in self.__objects.items():
-            if obj == clss['Amenity']:
-                amenity_list.append(obj)
-        return amenity_list
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 viewonly=False,
+                                 back_populates="place_amenities")
+    else:
+        @property
+        def amenities(self):
+            from models.amenity import Amenity
+            clss = {'Amenity': Amenity}
+            amenity_list = []
+
+            for obj in self.__objects.items():
+                if obj == clss['Amenity']:
+                    amenity_list.append(obj)
+            return amenity_list
 
     @amenities.setter
     def amenities(self, Amenity_id):
