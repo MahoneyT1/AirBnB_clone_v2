@@ -89,3 +89,42 @@ class FileStorage:
 
             if obj_key is not None:
                 del self.__objects[obj_key]
+    
+    def get(self, cls, id):
+        """
+        cls: class
+        id: string representing the object ID
+        Returns the object based on the class and its ID, or None if not found
+        """
+        if cls and id:
+            key = "{}.{}".format(cls.__name__, id)
+            return self.__objects.get(key, None)
+        return None
+    
+    def count(self, cls=None):
+        """
+        cls: class (optional)
+        Returns the number of objects in storage matching the given class.
+        If no class is passed, returns the count of all objects in storage.
+        """
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
+
+        classes = {
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
+        count_cls = 0
+        if cls:
+            for v in self.__object.values():
+                if isinstance(v, classes[cls]): 
+                    count_cls += 1
+            return count_cls
+        else:
+            return len(self.__objects)

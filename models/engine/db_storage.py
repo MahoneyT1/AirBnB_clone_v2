@@ -131,6 +131,35 @@ class DBStorage:
                                               expire_on_commit=False)
         self.__session = scoped_session(session_factory)
 
+    def get(self, cls, id):
+        """
+        cls: class
+        id: string representing the object ID
+        Returns the object based on the class and its ID, or None if not found
+        """
+        if cls and id:
+            if cls in self.classes: 
+                result = self.__session.query(self.classes[cls]).get(id)
+                return result            
+        return None
+
+    def count(self, cls=None):
+        """
+        cls: class (optional)
+        Returns the number of objects in storage matching the given class. If no
+        class is passed, returns the count of all objects in storage.
+        """
+        if cls:
+            if cls in self.classes:
+                return self.__session.query(self.classes[cls]).count()
+        else:
+            count_result = 0
+            for value in self.classes.values():
+                count_result += self.__session.query(value).count()
+            return count_result
+
+
+
     def close(self):
         """Close the session."""
         self.__session.close()
