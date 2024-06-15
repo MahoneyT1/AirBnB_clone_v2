@@ -154,18 +154,19 @@ class DBStorage:
         """
         count_result = 0
         if cls:
-            if cls.__name__ not in self.classes:
-                raise ValueError(f"Class '{cls.__name__}' not found in registered models")
-
-            model_class = self.classes[cls.__name__]
-            return self.__session.query(model_class.id).count()  # Query a specific column
+            for v in self.classes.values():
+                if isinstance(v, self.classes[cls]):
+                    result = self.__session.query(self.classes[cls]).all()
+                    
+                    for element in result:
+                        count_result += 1
+                    return count_result
+                else:
+                    print("NOt an instance")
         else:
-            # Count all objects (assuming a unique identifier column)
-            if len(self.classes) == 1:
-                first_model_class = list(self.classes.values())[0]  # Option 1: Convert to list
-                return self.__session.query(first_model_class.id).count()  # Query from any model
-            else:
-                raise ValueError("Cannot count all objects if multiple models exist")
+            for v in self.classes.values():
+                result = self.__session.query(v)
+                return len(result)
 
     def close(self):
         """Close the session."""
