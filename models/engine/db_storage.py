@@ -159,12 +159,12 @@ class DBStorage:
 
         if cls:
             if cls in self.classes.values():
-                count_result = self.__session.query(func.count(cls))
+                count_result = self.__session.query(self.classes[cls]).count()
             else:
                 print("Class not found in storage")
         else:
             for obj_cls in self.classes.values():
-                count_result += self.__session.query(func.count(obj_cls))
+                count_result += self.__session.query(obj_cls)
         
         return count_result
                 
