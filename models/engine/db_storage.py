@@ -154,16 +154,17 @@ class DBStorage:
         Returns the number of objects in storage matching the given class. If no
         class is passed, returns the count of all objects in storage.
         """
+        from sqlalchemy import func
         count_result = 0
 
         if cls:
             if cls in self.classes.values():
-                count_result = self.__session.query(cls).count()
+                count_result = self.__session.query(func.count(cls))
             else:
                 print("Class not found in storage")
         else:
             for obj_cls in self.classes.values():
-                count_result += self.__session.query(obj_cls).count()
+                count_result += self.__session.query(func.count(obj_cls))
         
         return count_result
                 
