@@ -138,12 +138,14 @@ class DBStorage:
         Returns the object based on the class and its ID, or None if not found
         """
         if cls and id:
-            if cls in self.classes: 
-                result = self.__session.query(self.classes[cls])
+            for k, v in self.classes.items():
+                if v == cls:
+                    all_class = self.classes[k]
+                    result = self.__session.query(all_class)
 
-                for b in result:
-                    print(b)
-                return result            
+                    for b in result:
+                        print(b.get('id'))
+                    return result            
         return None
 
     def count(self, cls=None):
@@ -153,20 +155,20 @@ class DBStorage:
         class is passed, returns the count of all objects in storage.
         """
         count_result = 0
+
         if cls:
-            for v in self.classes.values():
-                if isinstance(v, self.classes[cls]):
-                    result = self.__session.query(self.classes[cls]).all()
-                    
-                    for element in result:
-                        count_result += 1
-                    return count_result
-                else:
-                    print("NOt an instance")
+            if cls in self.classes.values():
+                count_result = self.__session.query(cls).count()
+            else:
+                print("Class not found in storage")
         else:
-            for v in self.classes.values():
-                result = self.__session.query(v)
-                return len(result)
+            for obj_cls in self.classes.values():
+                count_result += self.__session.query(obj_cls).count()
+        
+        return count_result
+                
+
+
 
     def close(self):
         """Close the session."""
