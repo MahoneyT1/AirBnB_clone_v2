@@ -139,7 +139,10 @@ class DBStorage:
         """
         if cls and id:
             if cls in self.classes: 
-                result = self.__session.query(self.classes[cls]).get(id)
+                result = self.__session.query(self.classes[cls])
+
+                for b in result:
+                    print(b)
                 return result            
         return None
 
@@ -149,16 +152,20 @@ class DBStorage:
         Returns the number of objects in storage matching the given class. If no
         class is passed, returns the count of all objects in storage.
         """
+        count_result = 0
         if cls:
-            if cls in self.classes:
-                return self.__session.query(self.classes[cls]).count()
+            if cls.__name__ not in self.classes:
+                raise ValueError(f"Class '{cls.__name__}' not found in registered models")
+
+            model_class = self.classes[cls.__name__]
+            return self.__session.query(model_class.id).count()  # Query a specific column
         else:
-            count_result = 0
-            for value in self.classes.values():
-                count_result += self.__session.query(value).count()
-            return count_result
-
-
+            # Count all objects (assuming a unique identifier column)
+            if len(self.classes) == 1:
+                first_model_class = list(self.classes.values())[0]  # Option 1: Convert to list
+                return self.__session.query(first_model_class.id).count()  # Query from any model
+            else:
+                raise ValueError("Cannot count all objects if multiple models exist")
 
     def close(self):
         """Close the session."""
