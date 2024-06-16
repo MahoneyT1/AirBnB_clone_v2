@@ -1,6 +1,5 @@
+#!/usr/bin/python3
 from flask import Flask
-from models import storage
-from api.v1.views import app_views
 from flask import Blueprint
 import os
 
@@ -8,7 +7,9 @@ host = os.getenv('HBNB_API_HOST')
 port = os.getenv('HBNB_API_PORT')
 
 app = Flask(__name__)
-app_views = Blueprint(app_views, __name__)
+from models import storage
+from api.v1.views import app_views
+app.register_blueprint(app_views)
 
 @app.teardown_appcontext
 def close_c():
