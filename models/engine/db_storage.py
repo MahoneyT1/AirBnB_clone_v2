@@ -63,33 +63,39 @@ class DBStorage:
 
     def all(self, cls=None):
         """
-        method that returns list of class present
-        if cls is None returns all objects
-        else returns all obj in database
+        query on the current database session (self.__session) all objects depending
+        of the class name (argument cls)
+        if cls=None, query all types of objects (User, State, City, Amenity, Place and Review)
+        this method must return a dictionary: (like FileStorage)
+            key = <class-name>.<object-id>
+            value = object
         """
-        # from models.base_model import BaseModel
-        new_list = []
-
-        if cls:
-            # query cls if cls is not None
-            instance_class = self.classes.get(cls)
-            result = self.__session.query(instance_class).all()
-
-            new_object = {}
-            for obj in result:
-                key = f"{instance_class.__name__}.{obj.id}"
-                new_object[key] = obj.to_dict()
-                new_list.append(new_object)
-            return new_list
+        all_object = {}
+        if cls is not None:
+            query_result = self.__session.query(cls).all()
+            for ob in query_result:
+                key = f"[{ob.__class__.__name__}].({ob.id})"
+                all_object[key] = ob
+                #print(f"Added {key}: {ob}")
+            return all_object
         else:
-            for class_name, class_obj in self.classes.items():
-                result = self.__session.query(class_obj)
-                print(f"Query result: {result}")
-                for obj in result:
-                    key = f"{class_obj.__name__}.{obj.id}"
-                    new_object[key] = obj.to_dict()
-                    new_list.append(new_object)
-                return new_list
+            for obj_cls in self.classes.values():
+                query_result = self.__session.query(obj_cls).all()
+                for ob in query_result:
+                    key = f"[{ob.__class__.__name__}].({ob.id})"
+                    all_object[key] = ob
+                    #print(f"Added {key}: {ob}")
+            return all_object
+
+
+
+
+
+  
+
+       
+       
+
     def new(self, obj):
         """
         add the object to the current database
@@ -137,6 +143,8 @@ class DBStorage:
         id: string representing the object ID
         Returns the object based on the class and its ID, or None if not found
         """
+        my_ob = {}
+        my_list = []
         if cls and id:
             for k, v in self.classes.items():
                 if v == cls:
@@ -144,8 +152,9 @@ class DBStorage:
                     result = self.__session.query(all_class)
 
                     for b in result:
-                        print(b.get('id'))
-                    return result            
+                        key = f"[{b.__class__.__name__}] ({b.id})"
+                        my_ob[key] = vars(b)
+                    return my_ob           
         return None
 
     def count(self, cls=None):
@@ -158,13 +167,14 @@ class DBStorage:
         from sqlalchemy import func
         count_result = 0
 
-        if cls:
-            result = self.__session.query(cls).all()
-            for ob in result:
-                count_result += 1
-            return count_result
-        else:
-            return self.__session.query(func.count()).count()
+        session = self.__session  # Assuming self has a session attribute
+
+        # Count objects of a specific class (if provided)
+        if hasattr(self, 'cls') and self.cls:
+            return session.query(self.cls).count()
+
+        # Count all objects (using a dummy column for count())
+        return session.query(func.count()).count()
 
 
     def close(self):
