@@ -157,10 +157,14 @@ class DBStorage:
         from sqlalchemy import func
         count_result = 0
         data = None
+        my_list = []
 
         if cls is None:
             for value in self.classes.values():
                data = self.__session.query(value).all()
+               my_list.append(data)
+               print(data)
+               
             for i in range(len(data)):
                 count_result += 1
             return count_result
