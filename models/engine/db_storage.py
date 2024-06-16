@@ -156,21 +156,14 @@ class DBStorage:
         """
         from sqlalchemy import func
         count_result = 0
+        data = None
 
-        if cls:
-            if cls in self.classes.values():
-                result = self.__session.query(cls).all()
-                len_of_result = len(result)
-                return len_of_result
-            else:
-                print("Class not found in storage")
-        else:
-            for obj_cls in self.classes.values():
-                count_result = self.__session.query(obj_cls)
-                len_of_result = len(count_result)
-                return len_of_result
-        
-        return count_result
+        if cls is None:
+            for value in self.classes.values():
+               data = self.__session.query(value).all()
+            for i in range(len(data)):
+                count_result += 1
+            return count_result
                 
 
 
