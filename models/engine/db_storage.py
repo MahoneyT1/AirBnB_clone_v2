@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 from dotenv import load_dotenv
 import os
 from models.base_model import Base, BaseModel
@@ -11,7 +12,7 @@ class DBStorage:
     """
     class DBStorage blueprint/ model
     """
-    
+
     from models.user import User
     from models.place import Place
     from models.state import State
@@ -25,14 +26,14 @@ class DBStorage:
 
     # object containing key/pair of all the class
     classes = {
-    'BaseModel': BaseModel,
-    'User': User,
-    'Place': Place,
-    'State': State,
-    'City': City,
-    'Amenity': Amenity,
-    'Review': Review
-    }
+            'BaseModel': BaseModel,
+            'User': User,
+            'Place': Place,
+            'State': State,
+            'City': City,
+            'Amenity': Amenity,
+            'Review': Review
+            }
 
     # initialize HBNB_ENVIROMENT VARIABLE
     def __init__(self):
@@ -58,7 +59,7 @@ class DBStorage:
         # else create engine schema
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
-                                              expire_on_commit=False)
+                                       expire_on_commit=False)
         self.__session = scoped_session(session_factory)
 
     def all(self, cls=None):
@@ -67,6 +68,7 @@ class DBStorage:
         if cls is None returns all objects
         else returns all obj in database
         """
+
         # from models.base_model import BaseModel
         new_list = []
 
@@ -90,11 +92,13 @@ class DBStorage:
                     new_object[key] = obj.to_dict()
                     new_list.append(new_object)
                 return new_list
+
     def new(self, obj):
         """
         add the object to the current database
         session (self.__session)
         """
+
         try:
             self.__session.add(obj)
         except SQLAlchemyError as e:
@@ -106,6 +110,7 @@ class DBStorage:
         # commit all changes of the current database
         # session (self.__session)
         """
+
         try:
             self.__session.commit()
         except SQLAlchemyError as e:
@@ -115,6 +120,7 @@ class DBStorage:
         """
         delete from the current database session obj if not None
         """
+
         try:
             if obj:
                 self.__session.delete(obj)
@@ -125,9 +131,10 @@ class DBStorage:
         """
         create all tables in the database
         """
+
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
-                                              expire_on_commit=False)
+                                       expire_on_commit=False)
         self.__session = scoped_session(session_factory)
 
     def get(self, cls, id):
@@ -136,6 +143,7 @@ class DBStorage:
         id: string representing the object ID
         Returns the object based on the class and its ID, or None if not found
         """
+
         my_ob = {}
         my_list = []
         if cls and id:
@@ -147,13 +155,14 @@ class DBStorage:
                     for b in result:
                         key = f"[{b.__class__.__name__}] ({b.id})"
                         my_ob[key] = vars(b)
-                    return my_ob           
+                    return my_ob
         return None
 
     def count(self, cls=None):
         """
         cls: class (optional)
-        Returns the number of objects in storage matching the given class. If no
+        Returns the number of objects in storage matching the given class.
+        If no
         class is passed, returns the count of all objects in storage.
         """
 
@@ -168,7 +177,6 @@ class DBStorage:
 
         # Count all objects (using a dummy column for count())
         return session.query(func.count()).count()
-
 
     def close(self):
         """Close the session."""
