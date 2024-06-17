@@ -12,8 +12,10 @@ from api.v1.views import app_views
 app.register_blueprint(app_views)
 
 @app.teardown_appcontext
-def close_c():
+def close_c(exception=None):
+    if exception:
+        app.logger.error('Teardown called with exception: %s', exception)
     storage.close()
 
 if __name__ == "__main__":
-    app.run(host=host, port=port, threaded=True)
+    app.run(host=host, port=port, debug=True)
