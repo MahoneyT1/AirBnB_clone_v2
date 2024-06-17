@@ -63,35 +63,33 @@ class DBStorage:
 
     def all(self, cls=None):
         """
-        query on the current database session (self.__session) all objects depending of the class name
-        (argument cls)
-
-        if cls=None, query all types of objects (User, State, City, Amenity, Place and Review)
-        this method must return a dictionary: (like FileStorage)
-        key = <class-name>.<object-id>
-        value = object
+        method that returns list of class present
+        if cls is None returns all objects
+        else returns all obj in database
         """
+        # from models.base_model import BaseModel
         new_list = []
-        result = None
-        new_dict = {}
 
         if cls:
-            if isinstance(cls, str):
-                cls = self.classes.get(cls)
-            if cls:
-                result = self.__session.query(cls).all()
-                for obj in result:
-                    key = f"{obj.__class__.__name__}.{obj.id}"
-                    new_dict[key] = obj.to_dict()
+            # query cls if cls is not None
+            instance_class = self.classes.get(cls)
+            result = self.__session.query(instance_class).all()
+
+            new_object = {}
+            for obj in result:
+                key = f"{instance_class.__name__}.{obj.id}"
+                new_object[key] = obj.to_dict()
+                new_list.append(new_object)
+            return new_list
         else:
-            for cls_name, cls in self.classes.items():
-                result = self.__session.query(cls).all()
+            for class_name, class_obj in self.classes.items():
+                result = self.__session.query(class_obj)
+                print(f"Query result: {result}")
                 for obj in result:
-                    key = f"{obj.__class__.__name__}.{obj.id}"
-                    new_dict[key] = obj.to_dict()
-
-        return new_dict
-
+                    key = f"{class_obj.__name__}.{obj.id}"
+                    new_object[key] = obj.to_dict()
+                    new_list.append(new_object)
+                return new_list
     def new(self, obj):
         """
         add the object to the current database
@@ -131,6 +129,46 @@ class DBStorage:
         session_factory = sessionmaker(bind=self.__engine,
                                               expire_on_commit=False)
         self.__session = scoped_session(session_factory)
+
+    def get(self, cls, id):
+        """
+        cls: class
+        id: string representing the object ID
+        Returns the object based on the class and its ID, or None if not found
+        """
+        my_ob = {}
+        my_list = []
+        if cls and id:
+            for k, v in self.classes.items():
+                if v == cls:
+                    all_class = self.classes[k]
+                    result = self.__session.query(all_class)
+
+                    for b in result:
+                        key = f"[{b.__class__.__name__}] ({b.id})"
+                        my_ob[key] = vars(b)
+                    return my_ob           
+        return None
+
+    def count(self, cls=None):
+        """
+        cls: class (optional)
+        Returns the number of objects in storage matching the given class. If no
+        class is passed, returns the count of all objects in storage.
+        """
+
+        from sqlalchemy import func
+        count_result = 0
+
+        session = self.__session  # Assuming self has a session attribute
+
+        # Count objects of a specific class (if provided)
+        if hasattr(self, 'cls') and self.cls:
+            return session.query(self.cls).count()
+
+        # Count all objects (using a dummy column for count())
+        return session.query(func.count()).count()
+
 
     def close(self):
         """Close the session."""

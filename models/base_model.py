@@ -4,6 +4,7 @@ import uuid
 from datetime import datetime
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, String, DateTime
+import json
 
 
 Base = declarative_base()
@@ -37,8 +38,8 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(
+            type(self).__name__, self.id, self.__dict__)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""    
@@ -46,23 +47,15 @@ class BaseModel:
         self.updated_at = datetime.now()
         storage.new(self)
         storage.save()
-
+    
+    # vars is used to convert class to object
     def to_dict(self):
         """Convert instance into dict format"""
-        #dictionary = {}
-        # dictionary.update(self.__dict__)
-        # dictionary.update({'__class__':
-        #                   (str(type(self)).split('.')[-1]).split('\'')[0]})
-        # dictionary['created_at'] = self.created_at.isoformat()
-        # dictionary['updated_at'] = self.updated_at.isoformat()
-        obj_dict = self.__dict__.copy()
-        obj_dict['__class__'] = self.__class__.__name__
-        obj_dict['created_at'] = self.created_at.isoformat()
-        obj_dict['updated_at'] = self.updated_at.isoformat()
 
-        if '_sa_instance_state' in obj_dict:
-            del obj_dict['_sa_instance_state']
-        return obj_dict
+        data = vars(self)
+        if '_sa_instance_state' in data.keys():
+            del data['_sa_instance_state']
+        return data
 
     def delete(self):
         """
