@@ -6,6 +6,8 @@ from models.base_model import Base, BaseModel
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.exc import SQLAlchemyError
+from models import base_model, amenity, city, place, review, state, user
+
 
 
 class DBStorage:
@@ -34,6 +36,15 @@ class DBStorage:
             'Amenity': Amenity,
             'Review': Review
             }
+
+    CNC = {
+    'Amenity': amenity.Amenity,
+    'City': city.City,
+    'Place': place.Place,
+    'Review': review.Review,
+    'State': state.State,
+    'User': user.User
+}
 
     # initialize HBNB_ENVIROMENT VARIABLE
     def __init__(self):
@@ -68,16 +79,24 @@ class DBStorage:
         if cls is None returns all objects
         else returns all obj in database
         """
-        
         new_dict = {}
-        for clss in self.classes:
-            if cls is None or cls is self.classes[clss] or cls is clss:
-                objs = self.__session.query(self.classes[clss]).all()
-                for obj in objs:
-                    key = obj.__class__.__name__ + '.' + obj.id
-                    new_dict[key] = obj
-        return (new_dict)
-       
+        new_list = []
+
+        if cls:
+            response_query = self.__session.query(cls).all()
+
+            for instance in response_query:
+               key = f"{type(instance).__class__.__name__} {instance.id}"
+               new_dict[key] = instance.to_dict()
+               new_list.append(new_dict)
+            return new_list
+        else:
+            for c in self.CNC.values():
+                a_query = self.__session.query(c)
+                for obj in a_query:
+                    obj_ref = "{}.{}".format(type(obj).__name__, obj.id)
+                    new_dict[obj_ref] = obj.to_dict()
+            return new_dict      
 
     def new(self, obj):
         """
