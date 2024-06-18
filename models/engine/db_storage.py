@@ -79,23 +79,23 @@ class DBStorage:
         if cls is None returns all objects
         else returns all obj in database
         """
-        new_dict = {}
+        
         new_list = []
 
-        if cls:
-            response_query = self.__session.query(cls).all()
-
-            for instance in response_query:
-               key = f"{type(instance).__class__.__name__} {instance.id}"
-               new_dict[key] = instance.to_dict()
-            return new_dict
+        obj_dict = {}
+        if cls is not None:
+            a_query = self.__session.query(cls)
+            for obj in a_query:
+                obj_ref = "{}.{}".format(type(obj).__name__, obj.id)
+                obj_dict[obj_ref] = obj
+            return obj_dict
         else:
             for c in self.CNC.values():
                 a_query = self.__session.query(c)
                 for obj in a_query:
                     obj_ref = "{}.{}".format(type(obj).__name__, obj.id)
-                    new_dict[obj_ref] = obj.to_dict()
-            return new_dict      
+                    obj_dict[obj_ref] = obj#.to_dict()
+            return obj_dict      
 
     def new(self, obj):
         """
