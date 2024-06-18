@@ -20,6 +20,8 @@ def stats():
     from  models import storage
     from models import user, place, review, state, city, amenity
 
+    # create an object and map the count of each instance in
+    # the storage
     stat = {
         'users': storage.count(user.User),
         'places': storage.count(place.Place),

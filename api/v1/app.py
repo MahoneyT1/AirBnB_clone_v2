@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ The app server """
+
 from flask import Flask
 from flask import Blueprint
 import os

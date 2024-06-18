@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
+
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
@@ -16,7 +17,7 @@ place_amenity = Table(
 
 
 class Place(BaseModel, Base):
-    """ A place to stay """
+    """ A place template that maps class to db schema """
 
     __tablename__ = 'places'
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
@@ -41,6 +42,8 @@ class Place(BaseModel, Base):
     else:
         @property
         def amenities(self):
+            """ returns list of amenities """
+
             from models.amenity import Amenity
             clss = {'Amenity': Amenity}
             amenity_list = []
@@ -52,6 +55,8 @@ class Place(BaseModel, Base):
 
         @amenities.setter
         def amenities(self, Amenity_id):
+            """ methods that sets attribute of amenities """
+
             from models.base_model import BaseModel
             from models.user import User
             from models.place import Place
@@ -70,6 +75,8 @@ class Place(BaseModel, Base):
 
     @property
     def reviews(self):
+        """ returns a place review where rv place_id == id """
+
         from models.review import Review
         from models import storage
 
