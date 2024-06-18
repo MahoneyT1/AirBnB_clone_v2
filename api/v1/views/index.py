@@ -4,7 +4,7 @@ Flask route that returns json status response
 """
 
 from api.v1.views import app_views
-from flask import jsonify
+from flask import jsonify, request
 
 # create a custom route
 
@@ -27,12 +27,19 @@ def stats():
 
     # create an object and map the count of each instance in
     # the storage
-    stat = {
-        'users': storage.count(user.User),
-        'places': storage.count(place.Place),
-        'reviews': storage.count(review.Review),
-        'states': storage.count(state.State),
-        'cities': storage.count(city.City),
-        'amenities': storage.count(amenity.Amenity)
-    }
-    return jsonify(stat)
+
+    if request.method == 'GET':
+        response = {}
+
+        stat = {
+        'users': "User",
+        'places': "Place",
+        'reviews': "Review",
+        'states': "State",
+        'cities': "City",
+        'amenities': "Amenity"
+        }
+
+        for key, value in stat.items():
+            response[key] = storage.count(value)
+        return jsonify(response)
