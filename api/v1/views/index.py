@@ -1,10 +1,15 @@
 #!/usr/bin/python3
+"""The file that include all route
+"""
 from api.v1.views import app_views
 from flask import jsonify
 
 # create a custom route
 @app_views.route('/status', methods=['GET'])
 def status():
+    """The status route that confirms
+    if the server is okay
+    """
     return jsonify({'status':'ok'})
 
 @app_views.route('/stats', methods=['GET'])
