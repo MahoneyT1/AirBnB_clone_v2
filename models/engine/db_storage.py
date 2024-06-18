@@ -68,30 +68,16 @@ class DBStorage:
         if cls is None returns all objects
         else returns all obj in database
         """
-
-        # from models.base_model import BaseModel
-        new_list = []
-
-        if cls:
-            # query cls if cls is not None
-            instance_class = self.classes.get(cls)
-            result = self.__session.query(instance_class).all()
-
-            new_object = {}
-            for obj in result:
-                key = f"{instance_class.__name__}.{obj.id}"
-                new_object[key] = obj.to_dict()
-                new_list.append(new_object)
-            return new_list
-        else:
-            for class_name, class_obj in self.classes.items():
-                result = self.__session.query(class_obj)
-                print(f"Query result: {result}")
-                for obj in result:
-                    key = f"{class_obj.__name__}.{obj.id}"
-                    new_object[key] = obj.to_dict()
-                    new_list.append(new_object)
-                return new_list
+        
+        new_dict = {}
+        for clss in self.classes:
+            if cls is None or cls is self.classes[clss] or cls is clss:
+                objs = self.__session.query(self.classes[clss]).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    new_dict[key] = obj
+        return (new_dict)
+       
 
     def new(self, obj):
         """
