@@ -32,12 +32,12 @@ def stats():
         response = {}
 
         stat = {
-        'users': "User",
-        'places': "Place",
-        'reviews': "Review",
-        'states': "State",
-        'cities': "City",
-        'amenities': "Amenity"
+        'users': user.User,
+        'places': place.Place,
+        'reviews': review.Review,
+        'states': state.State,
+        'cities': city.City,
+        'amenities': amenity.Amenity
         }
 
         for key, value in stat.items():
