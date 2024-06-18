@@ -88,8 +88,7 @@ class DBStorage:
             for instance in response_query:
                key = f"{type(instance).__class__.__name__} {instance.id}"
                new_dict[key] = instance.to_dict()
-               new_list.append(new_dict)
-            return new_list
+            return new_dict
         else:
             for c in self.CNC.values():
                 a_query = self.__session.query(c)
@@ -170,18 +169,10 @@ class DBStorage:
         If no
         class is passed, returns the count of all objects in storage.
         """
-
-        from sqlalchemy import func
-        count_result = 0
-
-        session = self.__session  # Assuming self has a session attribute
-
-        # Count objects of a specific class (if provided)
-        if hasattr(self, 'cls') and self.cls:
-            return session.query(self.cls).count()
-
-        # Count all objects (using a dummy column for count())
-        return session.query(func.count()).count()
+        if cls:
+            return len(self.all(cls))
+        else:
+            return len(self.all())
 
     def close(self):
         """Close the session."""

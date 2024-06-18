@@ -9,12 +9,21 @@ def status():
 
 @app_views.route('/stats', methods=['GET'])
 def stats():
+    """
+    ate an endpoint that retrieves the number of
+    each objects by type:
+    In api/v1/views/index.py
+    Route: /api/v1/stats
+    """
     from  models import storage
-    all_data = storage.all()
+    from models import user, place, review, state, city, amenity
 
-    # Format the data as JSON
-    formatted_data = {}
-    for key, obj in all_data.items():
-        formatted_data[key] = obj.to_dict()  # Assuming `to_dict` method exists in your models
-
-    return jsonify(formatted_data)
+    stat = {
+        'users': storage.count(user.User),
+        'places': storage.count(place.Place),
+        'reviews': storage.count(review.Review),
+        'states': storage.count(state.State),
+        'cities': storage.count(city.City),
+        'amenities': storage.count(amenity.Amenity)
+    }
+    return stat
