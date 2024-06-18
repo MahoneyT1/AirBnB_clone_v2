@@ -10,11 +10,9 @@ def status():
 @app_views.route('/stats', methods=['GET'])
 def stats():
     """
-    ate an endpoint that retrieves the number of
-    each objects by type:
-    In api/v1/views/index.py
-    Route: /api/v1/stats
+    function to return the count of all class objects
     """
+    
     from  models import storage
     from models import user, place, review, state, city, amenity
 
