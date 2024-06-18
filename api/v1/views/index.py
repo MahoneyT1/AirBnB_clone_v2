@@ -1,6 +1,8 @@
 #!/usr/bin/python3
-"""The file that include all route
 """
+Flask route that returns json status response
+""" 
+
 from api.v1.views import app_views
 from flask import jsonify
 
@@ -16,7 +18,6 @@ def status():
 def stats():
     """Function to return the count of all class objects
     """
-    
     from  models import storage
     from models import user, place, review, state, city, amenity
 
@@ -30,4 +31,4 @@ def stats():
         'cities': storage.count(city.City),
         'amenities': storage.count(amenity.Amenity)
     }
-    return stat
+    return jsonify(stat)
