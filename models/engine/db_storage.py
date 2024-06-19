@@ -84,7 +84,7 @@ class DBStorage:
 
         obj_dict = {}
         if cls is not None:
-            a_query = self.__session.query(cls])
+            a_query = self.__session.query(cls)
             for obj in a_query:
                 obj_ref = "{}.{}".format(type(obj).__name__, obj.id)
                 obj_dict[obj_ref] = obj
