@@ -116,20 +116,6 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def check_string(self, list_arg:str):
-        """ loops through the sliced list and
-        checks if there's empty string and
-        replace it and join it automatically
-        and return a new string combining all of them together
-        """
-        new_args_combined = ""  # create a new string to return
-
-        for element in list_arg:
-            if " " in element:
-                new_element = element.replace(" ", "")
-                new_args_combined = new_element
-        return new_args_combined
-
     def do_create(self, args):
         """ Create an object of any class
         Command syntax: create <Class name> <param 1> <param 2> <param 3>...
@@ -137,45 +123,68 @@ class HBNBCommand(cmd.Cmd):
         """
         from models import storage
         import json
+        from models.my_func import single_double_quote
 
         # split the command line arguments into a list
-        list_of_args = args.split(' ')
+        if args:
+            list_of_args = args.split(' ')
+            ready_attr = {}
 
-        if not list_of_args[0]:
-            print("** class name missing **")
-            return
-        if list_of_args[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        class_name_to_create = list_of_args[0]
-        attr_obj = {}
+            if not list_of_args[0]:
+                print("** class name missing **")
+                return
+            if list_of_args[0] not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
 
-        command = list_of_args[1:]
+            attr_obj = {}
+            my_list = []
 
-        for content in command:
-            attr_name, attr_value = content.split("=")  # extract attr_name and attr_value
-            
+            command = list_of_args[1:]
 
-            if "_" in attr_name:
-                attr_name = attr_name.replace("_", " ")
-            if "_" in attr_value:
-               attr_value = attr_value.replace("_", " ")
-  
-                # strip leading and trailing quotes/string
-            if attr_value.startswith('"') or attr_value.startswith("'")\
-                and attr_value.endswith('"') or attr_value.endswith("'"):
-                striped_values =  attr_value.strip('"').strip("'")
-                attr_obj[attr_name] = striped_values
+            for content in command:
+                
+                attr_name, attr_value = content.split("=")  # extract attr_name and attr_value
+                
+                if "_" in attr_name:
+                    attr_name = attr_name.replace("_", " ")
 
-                ready_attr = {}
-                for k, v in attr_obj.items():
-                    ready_attr[k] = v
+                if "_" in attr_value:
+                    attr_value = attr_value.replace("_", " ")
 
-                new_instance = self.classes[class_name_to_create](**ready_attr)
+                # using a function single_double_quotes() that strips
+                # quotes from a string and merge with a key to form dict
+                # of command
+                
+                attr_obj = single_double_quote(attr_value, attr_name)
+                my_list.append(attr_obj)
 
-        storage.new(new_instance)
-        storage.save()
-        print(new_instance.id)
+            for ob in my_list:  # loop through list to have access to inner object
+                for k, v in ob.items():
+                    attr_obj[k] = v  # assign to a new dict
+
+            for k, v in attr_obj.items():
+                try:
+                    if v.startswith('0'):  # loop the attr_dict and check for numbers
+                        v_with_leading_zero = v  # starting with zero and and leave as is
+                        ready_attr[k] = v_with_leading_zero
+                        continue
+                    else:
+                        v_without_leading_zero = int(v)
+                    ready_attr[k] = v_without_leading_zero
+                except ValueError:
+                    try:
+                        v = float(v)
+                        ready_attr[k] = v
+                    except ValueError:
+                        ready_attr[k] = v
+
+            # create the instance with all the attributes extracted
+            new_instance = self.classes[list_of_args[0]](**ready_attr)
+
+            storage.new(new_instance)  # add to storage
+            storage.save()  # save in storage file/db
+            print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
