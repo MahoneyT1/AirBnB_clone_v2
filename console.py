@@ -5,7 +5,7 @@ import os
 import sys
 from models.base_model import BaseModel
 from datetime import datetime
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -145,10 +145,6 @@ class HBNBCommand(cmd.Cmd):
             for content in command:
                 
                 attr_name, attr_value = content.split("=")  # extract attr_name and attr_value
-                
-                if "_" in attr_name:
-                    attr_name = attr_name.replace("_", " ")
-
                 if "_" in attr_value:
                     attr_value = attr_value.replace("_", " ")
 

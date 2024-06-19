@@ -1,13 +1,8 @@
-from models import storage
-from models.state import State
+from sys import argv
 
-data = storage.all()
-print(data)
+pass_arg = argv[1]
+arg_2 = argv[2]
 
-new_object = {}
-new_list =[]
+print(pass_arg, type(arg_2))
 
-# for d in data:
-#     key = "[{}] ".format(str(d.__class__.__name__))
-#     new_object[key] = vars(d)
-# print(new_object)
+        
