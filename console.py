@@ -116,6 +116,20 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def check_string(self, list_arg:str):
+        """ loops through the sliced list and
+        checks if there's empty string and
+        replace it and join it automatically
+        and return a new string combining all of them together
+        """
+        new_args_combined = ""  # create a new string to return
+
+        for element in list_arg:
+            if " " in element:
+                new_element = element.replace(" ", "")
+                new_args_combined = new_element
+        return new_args_combined
+
     def do_create(self, args):
         """ Create an object of any class
         Command syntax: create <Class name> <param 1> <param 2> <param 3>...
@@ -136,27 +150,32 @@ class HBNBCommand(cmd.Cmd):
         class_name_to_create = list_of_args[0]
         attr_obj = {}
 
-        for element in list_of_args[1:]:
-            if " " in element:  # check if there empty space between command
-                joined_element = element.replace(' ', "")
-                attr_name, attr_value = joined_element.split("=")  # extract attr_name and attr_value
+        command = list_of_args[1:]
 
+        for content in command:
+            attr_name, attr_value = content.split("=")  # extract attr_name and attr_value
+            
+
+            if "_" in attr_name:
+                attr_name = attr_name.replace("_", " ")
+            if "_" in attr_value:
+               attr_value = attr_value.replace("_", " ")
+  
                 # strip leading and trailing quotes/string
-                if attr_value.startswith('"') or attr_value.startswith("'")\
-                    and attr_value.endswith('"') or attr_value.endswith("'"):
-                    striped_values =  attr_value.strip('"').strip("'")
-                    attr_obj[attr_name] = striped_values
+            if attr_value.startswith('"') or attr_value.startswith("'")\
+                and attr_value.endswith('"') or attr_value.endswith("'"):
+                striped_values =  attr_value.strip('"').strip("'")
+                attr_obj[attr_name] = striped_values
 
-        ready_attr = {}
-        for k, v in attr_obj.items():
-            ready_attr[k] = v
+                ready_attr = {}
+                for k, v in attr_obj.items():
+                    ready_attr[k] = v
 
-        new_instance = self.classes[class_name_to_create](**ready_attr)
-        
+                new_instance = self.classes[class_name_to_create](**ready_attr)
+
         storage.new(new_instance)
         storage.save()
         print(new_instance.id)
-        print(new_instance)
 
     def help_create(self):
         """ Help information for the create method """
