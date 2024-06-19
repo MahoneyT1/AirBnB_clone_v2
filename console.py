@@ -137,25 +137,26 @@ class HBNBCommand(cmd.Cmd):
         attr_obj = {}
 
         for element in list_of_args[1:]:
-            attr_name, attr_value = element.split("=")
-            
+            if " " in element:  # check if there empty space between command
+                joined_element = element.replace(' ', "")
+                attr_name, attr_value = joined_element.split("=")  # extract attr_name and attr_value
 
-            if attr_value.startswith('"') or attr_value.startswith("'")\
-                and attr_value.endswith('"') or attr_value.endswith("'"):
-               striped_values =  attr_value.strip('"').strip("'")
-               attr_obj[attr_name] = striped_values
+                # strip leading and trailing quotes/string
+                if attr_value.startswith('"') or attr_value.startswith("'")\
+                    and attr_value.endswith('"') or attr_value.endswith("'"):
+                    striped_values =  attr_value.strip('"').strip("'")
+                    attr_obj[attr_name] = striped_values
 
         ready_attr = {}
         for k, v in attr_obj.items():
             ready_attr[k] = v
-        
+
         new_instance = self.classes[class_name_to_create](**ready_attr)
         
         storage.new(new_instance)
         storage.save()
         print(new_instance.id)
         print(new_instance)
-        
 
     def help_create(self):
         """ Help information for the create method """
