@@ -34,12 +34,12 @@
         "updated_at": "2024-06-19T21:54:27.455322",
         "__class__": "State"
     },
-    "City.ecc2ad23-7d20-41c9-9f21-a666025dc855": {
+    "City.475f69df-fbcb-4206-9a9f-aef5dfb72150": {
         "name": "Fremont",
-        "state id": "8ac0ab8d-992c-47cd-b6d4-7a423ccd9672",
-        "id": "ecc2ad23-7d20-41c9-9f21-a666025dc855",
-        "created_at": "2024-06-19T22:06:36.945685",
-        "updated_at": "2024-06-19T22:06:36.945685",
+        "state id": "320142c9-6023-459c-8196-f12d8d449b91",
+        "id": "475f69df-fbcb-4206-9a9f-aef5dfb72150",
+        "created_at": "2024-06-19T22:19:39.313108",
+        "updated_at": "2024-06-19T22:19:39.313108",
         "__class__": "City"
     }
 }
