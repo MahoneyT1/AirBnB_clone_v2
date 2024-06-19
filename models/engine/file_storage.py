@@ -5,17 +5,49 @@ import json
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
+    from models.base_model import BaseModel
 
     __file_path = 'file.json'
     __objects = {}
 
+    @classmethod
+    def from_json(cls, dict_t):
+        """ cls method that returns an instance of cls"""
+        return cls(**dict_t)
+
     def all(self, cls=None):
         """Returns a dictionary of models of type"""
-        if cls:
-            my_list = []
-            for cls in self.__objects.copy():
-                my_list.append(cls)
-            return my_list
+
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
+
+        classes = {
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
+        # an empty dict to collect generated data
+        new_ob = {}
+
+        # check if cls is none if not extract the classname
+        if cls is not None:
+            # class name to print
+            cls_to_print = cls
+
+            for k, v in self.__objects.items():  # loop through reloaded objects in filestorage
+                # if v is an instance of class to print
+                if isinstance(v, cls_to_print):
+                    new_ob[k] = v  # extract k:v
+            return new_ob  # return new_object
+
+        for k, v in self.__objects.items():  # if cls is None loop and extract data
+            new_ob[k] = v
+        return new_ob  # return new generated object
 
     def new(self, obj):
         """

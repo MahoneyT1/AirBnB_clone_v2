@@ -4,6 +4,7 @@ import cmd
 import os
 import sys
 from models.base_model import BaseModel
+from datetime import datetime
 from models.__init__ import storage
 from models.user import User
 from models.place import Place
@@ -121,65 +122,40 @@ class HBNBCommand(cmd.Cmd):
         Param syntax: <key name>=<value>
         """
         from models import storage
-        # split the command line arguments into a list
-        command_line_args = args.split()
+        import json
 
-        # check if class name is entered
-        if not command_line_args[0]:
+        # split the command line arguments into a list
+        list_of_args = args.split(' ')
+
+        if not list_of_args[0]:
             print("** class name missing **")
             return
-        elif command_line_args[0] not in HBNBCommand.classes:
+        if list_of_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        # create an empt obj to store extracted key:pair values
-        params = {}
-        # loop through command line args
-        # start count from 1, split and 
-        for element in command_line_args[1:]:
-            key, value = element.split("=")
-            key = key.replace("_", " ")  # Replace underscores with spaces in the key
-            value = value.replace("_", " ")
-            # check if value contains ""
-            # if yes strip them out
-            if value.startswith('"') and value.endswith('"'):
-                value = value.strip('"')
+        class_name_to_create = list_of_args[0]
+        attr_obj = {}
 
-            # convert floating number to float() 
-            try:
-                if '.' in value:
-                    value = float(value)
-                else:
-                    value = int(value)
-            except ValueError:
-                pass
-            # else store the value
-            params[key] = value
+        for element in list_of_args[1:]:
+            attr_name, attr_value = element.split("=")
+            
+
+            if attr_value.startswith('"') or attr_value.startswith("'")\
+                and attr_value.endswith('"') or attr_value.endswith("'"):
+               striped_values =  attr_value.strip('"').strip("'")
+               attr_obj[attr_name] = striped_values
+
+        ready_attr = {}
+        for k, v in attr_obj.items():
+            ready_attr[k] = v
         
-        # create an instance of chosen class
-        new_user_instance = HBNBCommand.classes[command_line_args[0]]()
+        new_instance = self.classes[class_name_to_create](**ready_attr)
         
-        # create a new dict
-        ready_command = {}
-
-        # loop through params and check for isolated string in keys
-        # replace with underscore
-        for k, v in params.items():
-            if isinstance(k, str) and " " in k:
-                updated_k = k.replace(" ", "_")
-                ready_command[updated_k] = v
-            else:
-                ready_command[k] = v
-
-        # loop through ready_command and set the attributes
-
-        for key, value in ready_command.items():
-            setattr(new_user_instance, key, value)
-
-        # save the storage
-        storage.new(new_user_instance)
+        storage.new(new_instance)
         storage.save()
-        # new_user_instance.
-        print(new_user_instance.id)
+        print(new_instance.id)
+        print(new_instance)
+        
 
     def help_create(self):
         """ Help information for the create method """
@@ -254,41 +230,29 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
 
-        if args:
+        import json
+
+        if args:  # if arg is passed
             args = args.split(' ')[0]  # remove possible trailing args
+
+            # extract class_name
+            class_name = self.classes.get(args)
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
 
-            # create an object of storage and call all method on it
-            cls = self.classes[args]
-            data = storage.all(cls=cls)
-            # loop through items in data
-            for k, value in data.items():
-                new_obj = {}
-                print_list.append(value)
-            print(print_list)
+            data_from = storage.all(class_name)  # call storage.all and parse class_name
+
+            for k, v in data_from.items():
+                key = f"[{v.__class__.__name__}] ({v.id})"
+                print(key, v)
         else:
-            # create an object of storage and call all method on it
-            data = storage.all()
-            # loop through items in data
-            for value in data:
-                # check if value has attribut of to_dict method
-                if hasattr(value, 'to_dict'):
-                    # if yes then call the method of value
-                    obj_dict = value.to_dict()
-                    # create a key for the new obj
-                    obj_class_name = value.__class__.__name__
-                    obj_id = obj_dict.get('id', id(value))
-                    formatted_obj = f"[{obj_class_name}] ({obj_id}) {obj_dict}"
-                    # append and print as a list
-                    print_list.append(formatted_obj)
-                else:
-                    # is doesnt have attribute id
-                    print(f"Object of type {type(value)} does not have to_dict method")
-            print(print_list)
+            data_all = storage.all()
+
+            for k, v in data_all.items():
+                key = f"[{v.__class__.__name__}] ({v.id})"
+                print(key, v)
 
     def help_all(self):
         """ Help information for the all command """
