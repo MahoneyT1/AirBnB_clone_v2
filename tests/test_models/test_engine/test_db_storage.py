@@ -59,6 +59,18 @@ class TestDBStorage(unittest.TestCase):
         storage_data = self.__session.query(State).all()
         self.assertEqual([elem.name for elem in storage_data][0],
                          "California")
+        
+    def test_drop_hbnb_dev_db_states(self):
+        """ tests to see if db exitst after drop statement"""
+
+        Base.metadata.drop_all(bind=self.__engine)
+        self.__session.commit()
+
+        Base.metadata.create_all(bind=self.__engine)
+        self.__session.commit()
+        query_storage = self.__session.query(State).all()
+        self.assertFalse(len(query_storage),
+                         msg="Because length of storage is 0")
 
 
 if __name__ == "__main__":
