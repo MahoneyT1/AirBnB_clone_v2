@@ -58,10 +58,12 @@ class BaseModel:
         new_obj = {}
         new_obj = self.__dict__.copy()
         new_obj['__class__'] = self.__class__.__name__
-        if 'created_at' in new_obj and isinstance(new_obj['created_at'], datetime):
+        if 'created_at' in new_obj and\
+            isinstance(new_obj['created_at'], datetime):
             new_obj['created_at'] = new_obj['created_at'].isoformat()
 
-        if 'updated_at' in new_obj and isinstance(new_obj['updated_at'], datetime):
+        if 'updated_at' in new_obj and\
+            isinstance(new_obj['updated_at'], datetime):
             new_obj['updated_at'] = new_obj['updated_at'].isoformat()
 
         if '_sa_instance_state' in new_obj.keys():

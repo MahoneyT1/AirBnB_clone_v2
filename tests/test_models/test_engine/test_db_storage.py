@@ -30,8 +30,7 @@ class TestDBStorage(unittest.TestCase):
             host = os.getenv("HBNB_API_HOST")
             database = os.getenv("HBNB_MYSQL_DB")
 
-            connection_string = """mysql+mysqldb:
-                                //{}:{}@{}/{}""".format(username,
+            connection_string = "mysql+mysqldb://{}:{}@{}/{}".format(username,
                                                         password,
                                                         host,
                                                         database)
