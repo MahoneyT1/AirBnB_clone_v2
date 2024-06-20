@@ -56,10 +56,11 @@ class TestDBStorage(unittest.TestCase):
 
         self.__session.add(state_object)
         self.__session.commit()
-        
+
         storage_data = self.__session.query(State).all()
         self.assertEqual([elem.name for elem in storage_data][0],
-                         "California" )
+                         "California")
+
 
 
 if __name__ == "__main__":
