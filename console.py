@@ -150,7 +150,7 @@ class HBNBCommand(cmd.Cmd):
                 # using a function single_double_quotes() that strips
                 # quotes from a string and merge with a key to form dict
                 # of command
-                
+
                 attr_obj = single_double_quote(attr_value, attr_name)
                 my_list.append(attr_obj)
 
@@ -245,7 +245,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -268,7 +268,7 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            data_from = storage.all(class_name)  # call storage.all and parse class_name
+            data_from = storage.all(class_name)
 
             for k, v in data_from.items():
                 key = f"[{v.__class__.__name__}] ({v.id})"
@@ -385,6 +385,7 @@ class HBNBCommand(cmd.Cmd):
 
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
