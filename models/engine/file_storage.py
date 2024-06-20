@@ -39,24 +39,28 @@ class FileStorage:
             # class name to print
             cls_to_print = cls
 
-            for k, v in self.__objects.items():  # loop through reloaded objects in filestorage
+            # loop through reloaded objects in filestorage
+            for k, v in self.__objects.items():
                 # if v is an instance of class to print
                 if isinstance(v, cls_to_print):
                     new_ob[k] = v  # extract k:v
             return new_ob  # return new_object
 
-        for k, v in self.__objects.items():  # if cls is None loop and extract data
+        # if cls is None loop and extract data
+        for k, v in self.__objects.items():
             new_ob[k] = v
         return new_ob  # return new generated object
 
     def new(self, obj):
         """
-        Add a new public instance method: def delete(self, obj=None):
-        to delete obj from __objects if it’s inside - if obj is equal
+        Add a new public instance method: def delete
+        (self, obj=None): to delete obj from __objects
+        if it’s inside - if obj is equal
         to None, the method should not do anything
 
-        Update the prototype of def all(self) to def all(self, cls=None)
-        -that returns the list of objects of one type of class. Example
+        Update the prototype of def all(self) to def all
+        (self, cls=None-that returns the list of objects
+        of one type of class. Example
         below with State - its an optional filtering
         """
 
