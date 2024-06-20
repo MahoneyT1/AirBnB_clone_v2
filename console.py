@@ -16,7 +16,6 @@ from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
-    
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
@@ -76,7 +75,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -143,8 +142,8 @@ class HBNBCommand(cmd.Cmd):
             command = list_of_args[1:]
 
             for content in command:
-                
-                attr_name, attr_value = content.split("=")  # extract attr_name and attr_value
+                # extract attr_name and attr_value
+                attr_name, attr_value = content.split("=")
                 if "_" in attr_value:
                     attr_value = attr_value.replace("_", " ")
 
@@ -155,14 +154,17 @@ class HBNBCommand(cmd.Cmd):
                 attr_obj = single_double_quote(attr_value, attr_name)
                 my_list.append(attr_obj)
 
-            for ob in my_list:  # loop through list to have access to inner object
+            # loop through list to have access to inner object
+            for ob in my_list:
                 for k, v in ob.items():
                     attr_obj[k] = v  # assign to a new dict
 
             for k, v in attr_obj.items():
                 try:
-                    if v.startswith('0'):  # loop the attr_dict and check for numbers
-                        v_with_leading_zero = v  # starting with zero and and leave as is
+                    # loop the attr_dict and check for numbers
+                    if v.startswith('0'):
+                        # starting with zero and and leave as is
+                        v_with_leading_zero = v
                         ready_attr[k] = v_with_leading_zero
                         continue
                     else:
@@ -380,6 +382,7 @@ class HBNBCommand(cmd.Cmd):
 
     def help_update(self):
         """ Help information for the update class """
+
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
