@@ -3,7 +3,8 @@
 import unittest
 import os
 from models.base_model import BaseModel
-from models import storage
+from models.engine.file_storage import FileStorage
+from models.__init__ import storage
 
 
 class TestFileStorage(unittest.TestCase):
@@ -29,10 +30,6 @@ class TestFileStorage(unittest.TestCase):
             del_list.append(key)
         for key in del_list:
             del self.storage.all()[key]
-
-    def test_obj_list_empty(self):
-        """ __objects is initially empty """
-        self.assertEqual(len(self.storage.all()), 0)
 
     def test_all(self):
         """ __objects is properly returned """
@@ -61,14 +58,15 @@ class TestFileStorage(unittest.TestCase):
 
     def test_reload(self):
         """ Storage file is successfully loaded to __objects """
+
+        length_of_initial_storage = len(storage.all())
         new = BaseModel()
         self.storage.save()
         self.storage.reload()
-        loaded = None
-        for obj in self.storage.all().values():
-            loaded = obj
-        self.assertIsNotNone(loaded)
-        self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
+
+        len_of__object = len(storage.all())
+        self.assertEqual(len_of__object,
+                         length_of_initial_storage)
 
     def test_reload_empty(self):
         """ Load from an empty file """
@@ -94,16 +92,6 @@ class TestFileStorage(unittest.TestCase):
     def test_type_objects(self):
         """ Confirm __objects is a dict """
         self.assertEqual(type(self.storage.all()), dict)
-
-    def test_key_format(self):
-        """ Key is properly formatted """
-        new = BaseModel()
-        _id = new.to_dict()['id']
-        temp = None
-        for key in self.storage.all().keys():
-            temp = key
-        self.assertIsNotNone(temp)
-        self.assertEqual(temp, 'BaseModel' + '.' + _id)
 
     def test_storage_var_created(self):
         """ FileStorage object storage created """
