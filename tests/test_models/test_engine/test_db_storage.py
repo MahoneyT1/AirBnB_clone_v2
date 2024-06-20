@@ -37,7 +37,7 @@ class TestDBStorage(unittest.TestCase):
             self.__session = scoped_session(session_factory)
 
     def tearDown(self):
-        self.close()
+        self.__session.close()
     
     def test_create_State(self):
         """ validates if State object was created succesfully"""
@@ -45,16 +45,11 @@ class TestDBStorage(unittest.TestCase):
         state_object = State()
         state_object.name = "California"
 
-        DBStorage.new(state_object)
-        DBStorage.save()
+        self.__session.add(state_object)
+        self.__session.commit()
         
-        storage_data = list(DBStorage.all(State).keys())
-        self.assertEqual([elem for elem in storage_data][0], "california" )
-
-
-
-            
-
+        storage_data = self.__session.query(State).all()
+        self.assertEqual([elem.name for elem in storage_data][0], "California" )
 
 if __name__ == "__main__":
-            
+    unittest.main()
