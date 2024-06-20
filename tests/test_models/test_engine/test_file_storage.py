@@ -4,6 +4,7 @@ import unittest
 from models.base_model import BaseModel
 from models import storage
 import os
+from models.state import State
 
 
 class test_fileStorage(unittest.TestCase):
@@ -107,6 +108,15 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_create_State(self):
+        """ tests create State console command"""
+        from console import HBNBCommand
+
+        initial_len_of = len(storage.all())
+        HBNBCommand.do_create(State)
+        after_class_creation = len(storage.all())
+        self.assertEqual(initial_len_of + 1, after_class_creation)
 
     def test_storage_after_class_creation(self):
         """ Check if class instance is created successfully"""
