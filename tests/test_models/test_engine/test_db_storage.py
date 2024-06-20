@@ -30,15 +30,24 @@ class TestDBStorage(unittest.TestCase):
             host = os.getenv("HBNB_API_HOST")
             database = os.getenv("HBNB_MYSQL_DB")
 
-            connection_string = f"mysql+mysqldb://{username}:{password}@{host}/{database}"
-            self.__engine = create_engine(connection_string, echo=True, pool_pre_ping=True)
+            connection_string = """mysql+mysqldb:
+                                //{}:{}@{}/{}""".format(username,
+                                                        password,
+                                                        host,
+                                                        database)
+
+            self.__engine = create_engine(connection_string,
+                                          echo=True,
+                                          pool_pre_ping=True)
             Base.metadata.create_all(self.__engine)
-            session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+            session_factory = sessionmaker(bind=self.__engine,
+                                           expire_on_commit=False)
             self.__session = scoped_session(session_factory)
 
     def tearDown(self):
+        """ closes the connection """
         self.__session.close()
-    
+
     def test_create_State(self):
         """ validates if State object was created succesfully"""
 
@@ -49,7 +58,9 @@ class TestDBStorage(unittest.TestCase):
         self.__session.commit()
         
         storage_data = self.__session.query(State).all()
-        self.assertEqual([elem.name for elem in storage_data][0], "California" )
+        self.assertEqual([elem.name for elem in storage_data][0],
+                         "California" )
+
 
 if __name__ == "__main__":
     unittest.main()
