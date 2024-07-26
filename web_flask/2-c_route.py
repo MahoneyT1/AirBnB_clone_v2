@@ -27,7 +27,7 @@ def display_third(text):
     """Display C"""
     if text:
         text = text.replace('_', ' ')
-        return "<HTML> <head><body> %% {{text}} %% </body></head></HTML>"
+        return f'C {text}'
 
 
 if __name__ == "__main__":
