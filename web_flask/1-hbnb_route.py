@@ -4,11 +4,12 @@ Your web application must be listening on 0.0.0.0,
 port 5000
 """
 
-
 from flask import Flask
+
 
 # An instance of flask
 app = Flask(__name__)
+
 
 @app.route('/', methods=['GET'],
            strict_slashes=False)
