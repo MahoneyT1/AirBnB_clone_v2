@@ -2,7 +2,7 @@
 """Start a Flask Application
 """
 
-from flask import Flask, make_response, jsonify
+from flask import Flask
 from markupsafe import escape
 
 
@@ -15,5 +15,5 @@ def display():
     return escape('Hello HBNB!')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
