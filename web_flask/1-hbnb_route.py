@@ -13,13 +13,13 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'],
            strict_slashes=False)
-
 def display():
     """Displays “Hello HBNB! """
     return 'Hello HBNB!'
 
+
 @app.route('/hbnb', methods=['GET'],
-                strict_slashes=False)
+           strict_slashes=False)
 def display_two():
     """/ hbnb: display HBNB"""
     return 'HBNB'
