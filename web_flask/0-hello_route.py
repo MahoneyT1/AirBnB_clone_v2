@@ -16,7 +16,7 @@ app = Flask(__name__)
 def display():
     """Displays (Hello HBNB!)
     """
-    return 'Hello HBNB!'
+    return "Hello HBNB!"
 
 
 if __name__ == "__main__":
