@@ -4,6 +4,7 @@ Your web application must be listening on 0.0.0.0,
 port 5000
 """
 from flask import Flask, render_template, make_response, jsonify
+from markupsafe import escape
 
 # An instance of flask
 app = Flask(__name__)
@@ -40,12 +41,10 @@ def display_python(text='is cool'):
     return f"Python {text}"
 
 
-@app.route('/number/<n>', strict_slashes=False)
+@app.route('/number/<int:n>', strict_slashes=False)
 def display_number(n):
     """Display n is a number only if n is an integer"""
-
-    if n.isdigit() == True:
-        return f'{n} is number'
+    return "{:d} is a number".format(n)
 
 
 if __name__ == "__main__":
