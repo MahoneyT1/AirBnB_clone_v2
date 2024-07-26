@@ -6,6 +6,8 @@ port 5000
 
 
 from flask import Flask, make_response, jsonify
+from markupsafe import escape
+
 
 # An instance of flask
 app = Flask(__name__)
@@ -15,7 +17,7 @@ app = Flask(__name__)
 def display():
     """Displays (Hello HBNB!)
     """
-    return make_response(jsonify("Hello HBNB!"), 200)
+    return escape("Hello HBNB!")
 
 
 if __name__ == "__main__":
