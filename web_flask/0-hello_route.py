@@ -12,8 +12,7 @@ from markupsafe import escape
 # An instance of flask
 app = Flask(__name__)
 
-@app.route("/", methods=['GET'],
-           strict_slashes=False)
+@app.route("/", strict_slashes=False)
 def display():
     """Displays (Hello HBNB!)
     """
