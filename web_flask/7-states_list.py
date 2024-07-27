@@ -2,7 +2,8 @@
 """Flask app """
 
 from models import storage
-from flask import Flask, render_template
+from flask import Flask, render_template, g
+from models.state import State
 
 
 app = Flask(__name__)
@@ -10,12 +11,14 @@ app = Flask(__name__)
 
 @app.before_request
 def before_request():
-    g.db = storage()
-
+    """ reloads the storage obj before each
+    request is sent
+    """
+    g.db = storage
 
 @app.teardown_appcontext
 def close(exception=None):
-    """Closes the storage session"""
+    """ closes session after each request"""
     storage.close()
 
 
@@ -23,7 +26,7 @@ def close(exception=None):
 def state_list():
     """List all states"""
 
-    states = storage.all()
+    states = g.db.all(State)
     return render_template(
             '7-states_list.html',
             states=states
