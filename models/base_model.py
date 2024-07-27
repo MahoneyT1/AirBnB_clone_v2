@@ -57,6 +57,7 @@ class BaseModel:
 
         new_obj = {}
         new_obj = self.__dict__.copy()
+
         new_obj['__class__'] = self.__class__.__name__
         if 'created_at' in new_obj and isinstance(
             new_obj['created_at'], datetime):

@@ -6,7 +6,9 @@
     <BODY>
         <H1>States</H1>
         <UL>
-	   <p> {{ states }} </p>
+            {% for v in new_list %}
+	        <li>{{ v.id }}: <B>{{ v.name }}</B></li>
+            {% endfor %} 
         </UL>
     </BODY>
 </HTML>
