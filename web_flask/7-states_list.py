@@ -11,34 +11,22 @@ import json
 app = Flask(__name__)
 
 
-@app.before_request
-def before_request():
-    """ reloads the storage obj before each
-    request is sent
-    """
-    g.db = storage
+@app.route('/states_list', strict_slashes=False)
+def state_list():
+    """List all states"""
+
+    states = sorted(list(storage.all(State).values()),
+                                key=lambda x: x.name)
+    return render_template(
+            '7-states_list.html',
+            states=states
+            )
 
 
 @app.teardown_appcontext
 def close(exception=None):
     """ closes session after each request"""
     storage.close()
-
-
-@app.route('/states_list', strict_slashes=False)
-def state_list():
-    """List all states"""
-
-    data = g.db.all(State)
-
-    new_list = []
-    for k, v in data.items():
-        new_list.append(v.to_dict())
-
-    return render_template(
-            '7-states_list.html',
-            new_list=new_list
-            )
 
 
 if __name__ == '__main__':
